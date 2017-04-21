@@ -15,6 +15,11 @@ services:
 #    volumes:
 #      - ./redis:/data
 
+  s3proxy:
+    restart: always
+    image: andrewgaul/s3proxy
+    env_file: .env.production
+
   web:
     build: .
     image: gargron/mastodon
@@ -26,6 +31,7 @@ services:
     depends_on:
       - db
       - redis
+      - s3proxy
     volumes:
       - ./public/assets:/mastodon/public/assets
       - ./public/packs:/mastodon/public/packs
