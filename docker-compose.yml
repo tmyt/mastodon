@@ -33,6 +33,14 @@ services:
 #    volumes:
 #      - ./elasticsearch:/usr/share/elasticsearch/data
 
+  s3proxy:
+    restart: always
+    image: andrewgaul/s3proxy
+    networks:
+      - internal_network
+      - external_network
+    env_file: .env.production
+
   web:
     build: .
     image: tootsuite/mastodon
@@ -50,6 +58,7 @@ services:
       - db
       - redis
 #      - es
+      - s3proxy
     volumes:
       - ./public/system:/mastodon/public/system
 
