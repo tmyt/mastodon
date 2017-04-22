@@ -19,6 +19,8 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { length } from 'stringz';
 import { countableText } from '../util/counter';
 
+import { connect } from 'react-redux';
+
 const messages = defineMessages({
   placeholder: { id: 'compose_form.placeholder', defaultMessage: 'What is on your mind?' },
   spoiler_placeholder: { id: 'compose_form.spoiler_placeholder', defaultMessage: 'Write your warning here' },
@@ -26,6 +28,16 @@ const messages = defineMessages({
   publishLoud: { id: 'compose_form.publish_loud', defaultMessage: '{publish}!' },
 });
 
+const makeMapStateToProps = () => {
+  const mapStateToProps = (state, props) => ({
+    enablePowerMode: state.getIn(['meta', 'enable_power_mode']),
+    colorfulPowerMode: state.getIn(['meta', 'colorful_power_mode'])
+  });
+
+  return mapStateToProps;
+};
+
+@connect(makeMapStateToProps)
 @injectIntl
 export default class ComposeForm extends ImmutablePureComponent {
 
@@ -98,6 +110,14 @@ export default class ComposeForm extends ImmutablePureComponent {
     // save the last caret position so we can restore it below!
     if (!nextProps.is_uploading && this.props.is_uploading) {
       this._restoreCaret = this.autosuggestTextarea.textarea.selectionStart;
+    }
+  }
+
+  componentDidMount () {
+    if (this.props.enablePowerMode) {
+      const POWERMODE = require('activate-power-mode');
+      POWERMODE.colorful = !!this.props.colorfulPowerMode;
+      this.autosuggestTextarea.textarea.addEventListener('input', POWERMODE);
     }
   }
 

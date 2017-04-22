@@ -26,6 +26,8 @@ class InitialStateSerializer < ActiveModel::Serializer
       store[:delete_modal]   = object.current_account.user.setting_delete_modal
       store[:auto_play_gif]  = object.current_account.user.setting_auto_play_gif
       store[:reduce_motion]  = object.current_account.user.setting_reduce_motion
+      store[:enable_power_mode] = object.current_account.user.setting_enable_power_mode
+      store[:colorful_power_mode] = object.current_account.user.setting_colorful_power_mode
     end
 
     store

@@ -21,6 +21,7 @@
   },
   "private": true,
   "dependencies": {
+    "activate-power-mode": "https://github.com/tmyt/activate-power-mode.git#feature/common-js",
     "array-includes": "^3.0.3",
     "autoprefixer": "^7.1.6",
     "axios": "~0.16.2",

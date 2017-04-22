@@ -28,6 +28,8 @@ defaults: &defaults
   system_font_ui: false
   noindex: false
   theme: 'default'
+  enable_power_mode: false
+  colorful_power_mode: false
   notification_emails:
     follow: false
     reblog: false

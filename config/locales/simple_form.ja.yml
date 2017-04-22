@@ -46,6 +46,8 @@ ja:
         setting_system_font_ui: システムのデフォルトフォントを使う
         setting_theme: サイトテーマ
         setting_unfollow_modal: フォロー解除する前に確認ダイアログを表示する
+        setting_enable_power_mode: PowerModeを有効にする
+        setting_colorful_power_mode: PowerModeをカラフルにする
         severity: 重大性
         type: インポートする項目
         username: ユーザー名

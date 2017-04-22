@@ -213,6 +213,14 @@ class User < ApplicationRecord
     @invite_code = code
   end
 
+  def setting_enable_power_mode
+    settings.enable_power_mode
+  end
+
+  def setting_colorful_power_mode
+    settings.colorful_power_mode
+  end
+
   protected
 
   def send_devise_notification(notification, *args)

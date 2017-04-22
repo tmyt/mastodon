@@ -27,6 +27,8 @@ class UserSettingsDecorator
     user.settings['system_font_ui']      = system_font_ui_preference if change?('setting_system_font_ui')
     user.settings['noindex']             = noindex_preference if change?('setting_noindex')
     user.settings['theme']               = theme_preference if change?('setting_theme')
+    user.settings['enable_power_mode']   = enable_power_mode_preference if change?('setting_enable_power_mode')
+    user.settings['colorful_power_mode'] = colorful_power_mode_preference if change?('setting_colorful_power_mode')
   end
 
   def merged_notification_emails
@@ -75,6 +77,14 @@ class UserSettingsDecorator
 
   def theme_preference
     settings['setting_theme']
+  end
+
+  def enable_power_mode_preference
+    boolean_cast_setting 'setting_enable_power_mode'
+  end
+
+  def colorful_power_mode_preference
+    boolean_cast_setting 'setting_colorful_power_mode'
   end
 
   def boolean_cast_setting(key)
