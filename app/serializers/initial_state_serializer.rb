@@ -30,6 +30,8 @@ class InitialStateSerializer < ActiveModel::Serializer
       store[:expand_spoilers] = object.current_account.user.setting_expand_spoilers
       store[:reduce_motion]   = object.current_account.user.setting_reduce_motion
       store[:is_staff]        = object.current_account.user.staff?
+      store[:enable_power_mode]       = object.current_account.user.setting_enable_power_mode
+      store[:colorful_power_mode]     = object.current_account.user.setting_colorful_power_mode
     end
 
     store

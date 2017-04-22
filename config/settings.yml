@@ -31,6 +31,8 @@ defaults: &defaults
   noindex: false
   theme: 'default'
   aggregate_reblogs: true
+  enable_power_mode: false
+  colorful_power_mode: false
   notification_emails:
     follow: false
     reblog: false

@@ -19,6 +19,7 @@ import { isMobile } from '../../../is_mobile';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { length } from 'stringz';
 import { countableText } from '../util/counter';
+import { connect } from 'react-redux';
 import Icon from 'mastodon/components/icon';
 
 const allowedAroundShortCode = '><\u0085\u0020\u00a0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029\u0009\u000a\u000b\u000c\u000d';
@@ -30,12 +31,18 @@ const messages = defineMessages({
   publishLoud: { id: 'compose_form.publish_loud', defaultMessage: '{publish}!' },
 });
 
+const makeMapStateToProps = () => {
+  const mapStateToProps = (state, props) => ({
+    enablePowerMode: state.getIn(['meta', 'enable_power_mode']),
+    colorfulPowerMode: state.getIn(['meta', 'colorful_power_mode'])
+  });
+
+  return mapStateToProps;
+};
+
+@connect(makeMapStateToProps)
 export default @injectIntl
 class ComposeForm extends ImmutablePureComponent {
-
-  static contextTypes = {
-    router: PropTypes.object,
-  };
 
   static propTypes = {
     intl: PropTypes.object.isRequired,
@@ -109,6 +116,22 @@ class ComposeForm extends ImmutablePureComponent {
 
   handleChangeSpoilerText = (e) => {
     this.props.onChangeSpoilerText(e.target.value);
+  }
+
+  componentWillReceiveProps (nextProps) {
+    // If this is the update where we've finished uploading,
+    // save the last caret position so we can restore it below!
+    if (!nextProps.is_uploading && this.props.is_uploading) {
+      this._restoreCaret = this.autosuggestTextarea.textarea.selectionStart;
+    }
+  }
+
+  componentDidMount () {
+    if (this.props.enablePowerMode) {
+      const POWERMODE = require('activate-power-mode');
+      POWERMODE.colorful = !!this.props.colorfulPowerMode;
+      this.autosuggestTextarea.textarea.addEventListener('input', POWERMODE);
+    }
   }
 
   componentDidUpdate (prevProps) {

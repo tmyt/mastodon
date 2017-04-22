@@ -32,6 +32,8 @@ class UserSettingsDecorator
     user.settings['theme']               = theme_preference if change?('setting_theme')
     user.settings['hide_network']        = hide_network_preference if change?('setting_hide_network')
     user.settings['aggregate_reblogs']   = aggregate_reblogs_preference if change?('setting_aggregate_reblogs')
+    user.settings['enable_power_mode']   = enable_power_mode_preference if change?('setting_enable_power_mode')
+    user.settings['colorful_power_mode'] = colorful_power_mode_preference if change?('setting_colorful_power_mode')
     user.settings['show_application']    = show_application_preference if change?('setting_show_application')
   end
 
@@ -105,6 +107,14 @@ class UserSettingsDecorator
 
   def aggregate_reblogs_preference
     boolean_cast_setting 'setting_aggregate_reblogs'
+  end
+
+  def enable_power_mode_preference
+    boolean_cast_setting 'setting_enable_power_mode'
+  end
+
+  def colorful_power_mode_preference
+    boolean_cast_setting 'setting_colorful_power_mode'
   end
 
   def boolean_cast_setting(key)
