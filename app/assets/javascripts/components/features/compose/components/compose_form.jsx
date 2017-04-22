@@ -17,11 +17,21 @@ import UploadFormContainer from '../containers/upload_form_container';
 import TextIconButton from './text_icon_button';
 import WarningContainer from '../containers/warning_container';
 
+import { connect } from 'react-redux';
+
 const messages = defineMessages({
   placeholder: { id: 'compose_form.placeholder', defaultMessage: 'What is on your mind?' },
   spoiler_placeholder: { id: 'compose_form.spoiler_placeholder', defaultMessage: 'Content warning' },
   publish: { id: 'compose_form.publish', defaultMessage: 'Toot' }
 });
+
+const makeMapStateToProps = () => {
+  const mapStateToProps = (state, props) => ({
+    enablePowerMode: state.getIn(['meta', 'enable_power_mode'])
+  });
+
+  return mapStateToProps;
+};
 
 class ComposeForm extends React.PureComponent {
 
@@ -76,6 +86,13 @@ class ComposeForm extends React.PureComponent {
     // save the last caret position so we can restore it below!
     if (!nextProps.is_uploading && this.props.is_uploading) {
       this._restoreCaret = this.autosuggestTextarea.textarea.selectionStart;
+    }
+  }
+
+  componentDidMount () {
+    if (this.props.enablePowerMode) {
+      const POWERMODE = require('./activate-power-mode');
+      this.autosuggestTextarea.textarea.addEventListener('input', POWERMODE);
     }
   }
 
@@ -206,4 +223,4 @@ ComposeForm.propTypes = {
   onPickEmoji: PropTypes.func.isRequired
 };
 
-export default injectIntl(ComposeForm);
+export default connect(makeMapStateToProps)(injectIntl(ComposeForm));
