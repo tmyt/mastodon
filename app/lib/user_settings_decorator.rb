@@ -35,6 +35,7 @@ class UserSettingsDecorator
     user.settings['enable_power_mode']   = enable_power_mode_preference if change?('setting_enable_power_mode')
     user.settings['colorful_power_mode'] = colorful_power_mode_preference if change?('setting_colorful_power_mode')
     user.settings['show_application']    = show_application_preference if change?('setting_show_application')
+    user.settings['advanced_layout']     = advanced_layout_preference if change?('setting_advanced_layout')
   end
 
   def merged_notification_emails
@@ -107,6 +108,10 @@ class UserSettingsDecorator
 
   def aggregate_reblogs_preference
     boolean_cast_setting 'setting_aggregate_reblogs'
+  end
+
+  def advanced_layout_preference
+    boolean_cast_setting 'setting_advanced_layout'
   end
 
   def enable_power_mode_preference
