@@ -9,14 +9,6 @@
       = f.input :email, placeholder: t('simple_form.labels.defaults.email'), required: true, input_html: { 'aria-label' => t('simple_form.labels.defaults.email'), :autocomplete => 'off' }, hint: false, disabled: closed_registrations?
       = f.input :password, placeholder: t('simple_form.labels.defaults.password'), required: true, input_html: { 'aria-label' => t('simple_form.labels.defaults.password'), :autocomplete => 'off' }, hint: false, disabled: closed_registrations?
       = f.input :password_confirmation, placeholder: t('simple_form.labels.defaults.confirm_password'), required: true, input_html: { 'aria-label' => t('simple_form.labels.defaults.confirm_password'), :autocomplete => 'off' }, hint: false, disabled: closed_registrations?
-  .actions
-    - if ENV['RECAPTCHA_ENABLED'] == 'true'
-      %script(src='https://www.google.com/recaptcha/api.js' async defer)
-      = javascript_include_tag 'on_submit_new_user'
-      = f.button :button, t('auth.register'), type: :submit, class: 'button button-primary g-recaptcha',
-        data: { sitekey: ENV['RECAPTCHA_SITE_KEY'], callback: 'on_submit_new_user' }
-    - else
-      = f.button :button, t('auth.register'), type: :submit, class: 'button button-primary'
 
     - if approved_registrations?
       .fields-group
@@ -27,7 +19,13 @@
       = f.input :agreement, as: :boolean, wrapper: :with_label, label: t('auth.checkbox_agreement_html', rules_path: about_more_path, terms_path: terms_path), disabled: closed_registrations?
 
     .actions
-      = f.button :button, sign_up_message, type: :submit, class: 'button button-primary', disabled: closed_registrations?
+      - if ENV['RECAPTCHA_ENABLED'] == 'true'
+        %script(src='https://www.google.com/recaptcha/api.js' async defer)
+        = javascript_include_tag 'on_submit_new_user'
+        = f.button :button, t('auth.register'), type: :submit, class: 'button button-primary g-recaptcha',
+          data: { sitekey: ENV['RECAPTCHA_SITE_KEY'], callback: 'on_submit_new_user' }
+      - else
+        = f.button :button, t('auth.register'), type: :submit, class: 'button button-primary'
 
     - if closed_registrations? && @instance_presenter.closed_registrations_message.present?
       .simple_form__overlay-area__overlay
