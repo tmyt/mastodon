@@ -36,6 +36,9 @@ class UserSettingsDecorator
     user.settings['colorful_power_mode'] = colorful_power_mode_preference if change?('setting_colorful_power_mode')
     user.settings['show_application']    = show_application_preference if change?('setting_show_application')
     user.settings['advanced_layout']     = advanced_layout_preference if change?('setting_advanced_layout')
+    user.settings['use_blurhash']        = use_blurhash_preference if change?('setting_use_blurhash')
+    user.settings['use_pending_items']   = use_pending_items_preference if change?('setting_use_pending_items')
+    user.settings['trends']              = trends_preference if change?('setting_trends')
   end
 
   def merged_notification_emails
@@ -114,12 +117,16 @@ class UserSettingsDecorator
     boolean_cast_setting 'setting_advanced_layout'
   end
 
-  def enable_power_mode_preference
-    boolean_cast_setting 'setting_enable_power_mode'
+  def use_blurhash_preference
+    boolean_cast_setting 'setting_use_blurhash'
   end
 
-  def colorful_power_mode_preference
-    boolean_cast_setting 'setting_colorful_power_mode'
+  def use_pending_items_preference
+    boolean_cast_setting 'setting_use_pending_items'
+  end
+
+  def trends_preference
+    boolean_cast_setting 'setting_trends'
   end
 
   def boolean_cast_setting(key)

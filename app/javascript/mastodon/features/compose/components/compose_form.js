@@ -44,6 +44,10 @@ const makeMapStateToProps = () => {
 export default @injectIntl
 class ComposeForm extends ImmutablePureComponent {
 
+  static contextTypes = {
+    router: PropTypes.object,
+  };
+
   static propTypes = {
     intl: PropTypes.object.isRequired,
     text: PropTypes.string.isRequired,
@@ -128,14 +132,6 @@ class ComposeForm extends ImmutablePureComponent {
       if (left < 0 || right > (window.innerWidth || document.documentElement.clientWidth)) {
         this.composeForm.scrollIntoView();
       }
-    }
-  }
-
-  componentDidMount () {
-    if (this.props.enablePowerMode) {
-      const POWERMODE = require('activate-power-mode');
-      POWERMODE.colorful = !!this.props.colorfulPowerMode;
-      this.autosuggestTextarea.textarea.addEventListener('input', POWERMODE);
     }
   }
 
