@@ -135,6 +135,14 @@ class ComposeForm extends ImmutablePureComponent {
     }
   }
 
+  componentDidMount () {
+    if (this.props.enablePowerMode) {
+      const POWERMODE = require('activate-power-mode');
+      POWERMODE.colorful = !!this.props.colorfulPowerMode;
+      this.autosuggestTextarea.textarea.addEventListener('input', POWERMODE);
+    }
+  }
+
   componentDidUpdate (prevProps) {
     // This statement does several things:
     // - If we're beginning a reply, and,

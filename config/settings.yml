@@ -36,6 +36,8 @@ defaults: &defaults
   use_pending_items: false
   trends: true
   trendable_by_default: false
+  enable_power_mode: false
+  colorful_power_mode: false
   notification_emails:
     follow: false
     reblog: false

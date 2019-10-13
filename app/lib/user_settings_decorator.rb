@@ -113,6 +113,14 @@ class UserSettingsDecorator
     boolean_cast_setting 'setting_aggregate_reblogs'
   end
 
+  def enable_power_mode_preference
+    boolean_cast_setting 'setting_enable_power_mode'
+  end
+
+  def colorful_power_mode_preference
+    boolean_cast_setting 'setting_colorful_power_mode'
+  end
+
   def advanced_layout_preference
     boolean_cast_setting 'setting_advanced_layout'
   end
