@@ -100,7 +100,7 @@ RUN apt -y --no-install-recommends install \
 	  libssl1.1 libpq5 imagemagick ffmpeg \
 	  libicu60 libprotobuf10 libidn11 libyaml-0-2 \
 	  file ca-certificates tzdata libreadline7 && \
-	apt -y install gcc && \
+	apt -y install gcc git && \
 	ln -s /opt/mastodon /mastodon && \
 	gem install bundler && \
 	rm -rf /var/cache && \
