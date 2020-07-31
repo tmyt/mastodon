@@ -21,7 +21,7 @@ module Admin
       @reports_count         = Report.unresolved.count
       @queue_backlog         = Sidekiq::Stats.new.enqueued
       @recent_users          = User.confirmed.recent.includes(:account).limit(8)
-      @database_size         = ActiveRecord::Base.connection.execute('SELECT pg_database_size(current_database())').first['pg_database_size']
+      @database_size         = "N/A"
       @redis_size            = redis_info['used_memory']
       @ldap_enabled          = ENV['LDAP_ENABLED'] == 'true'
       @cas_enabled           = ENV['CAS_ENABLED'] == 'true'
