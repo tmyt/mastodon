@@ -106,6 +106,9 @@ RUN apt -y --no-install-recommends install \
 	rm -rf /var/cache && \
 	rm -rf /var/lib/apt/lists/*
 
+# Install libjemalloc
+RUN apt -y install libjemalloc1
+
 # Add tini
 ENV TINI_VERSION="0.18.0"
 ENV TINI_SUM="12d20136605531b09a2c2dac02ccee85e1b874eb322ef6baf7561cd93f93c855"
