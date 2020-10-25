@@ -101,13 +101,11 @@ RUN apt -y --no-install-recommends install \
 	  libicu66 libprotobuf17 libidn11 libyaml-0-2 \
 	  file ca-certificates tzdata libreadline8 && \
 	apt -y install gcc git && \
+        apt -y install libjemalloc2 && \
 	ln -s /opt/mastodon /mastodon && \
 	gem install bundler && \
 	rm -rf /var/cache && \
 	rm -rf /var/lib/apt/lists/*
-
-# Install libjemalloc
-RUN apt -y install libjemalloc1
 
 # Add tini
 ENV TINI_VERSION="0.18.0"
