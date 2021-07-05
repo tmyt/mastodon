@@ -94,6 +94,7 @@ services:
     env_file: .env.production
     environment:
       - MALLOC_ARENA_MAX=1
+      - LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2
     command: bundle exec sidekiq -c 3
     depends_on:
 #      - db
