@@ -1923,6 +1923,13 @@ acorn@^8.0.4:
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-8.0.4.tgz#7a3ae4191466a6984eee0fe3407a4f3aa9db8354"
   integrity sha512-XNP0PqF1XD19ZlLKvB7cMmnZswW4C/03pRHgirB30uSJTaS3A3V1/P4sS3HPvFmjoriPCJQs+JDSbm4bL1TxGQ==
 
+"activate-power-mode@https://github.com/tmyt/activate-power-mode.git#feature/common-js":
+  version "1.0.0"
+  uid "0d406cc4dc4b4ce3eea81c7bec6dc9c1cdbcf68f"
+  resolved "https://github.com/tmyt/activate-power-mode.git#0d406cc4dc4b4ce3eea81c7bec6dc9c1cdbcf68f"
+  dependencies:
+    textarea-caret "^3.0.2"
+
 aggregate-error@^3.0.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/aggregate-error/-/aggregate-error-3.1.0.tgz#92670ff50f5359bdb7a3e0d40d0ec30c5737687a"
@@ -10825,16 +10832,17 @@ terser@^5.3.4:
     source-map "~0.7.2"
     source-map-support "~0.5.19"
 
-tesseract.js-core@^2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/tesseract.js-core/-/tesseract.js-core-2.2.0.tgz#6ef78051272a381969fac3e45a226e85022cffef"
-  integrity sha512-a8L+OJTbUipBsEDsJhDPlnLB0TY1MkTZqw5dqUwmiDSjUzwvU7HWLg/2+WDRulKUi4LE+7PnHlaBlW0k+V0U0w==
+tesseract.js-core@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/tesseract.js-core/-/tesseract.js-core-4.0.0.tgz#fad3459da48d36e13c213ba34e5f6cd21f697d84"
+  integrity sha512-J54sS/MqkwLAOoFBbU8qbRrVRiwfQs2fil2EZGa0cC/FNos/fdscok/ZQRlAm3HuL8Yic/lg2VDXdbUMkuGOvw==
 
-tesseract.js@^2.1.1:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/tesseract.js/-/tesseract.js-2.1.1.tgz#5c50fc95542ce8d834cb952bfb75a8fc85f1441d"
-  integrity sha512-utg0A8UzT1KwBvZf+UMGmM8LU6izeol6yIem0Z44+7Qqd/YWgRVQ99XOG18ApTOXX48lGE++PDwlcZYkv0ygRQ==
+tesseract.js@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/tesseract.js/-/tesseract.js-4.0.0.tgz#df80de2ca520e1c8961b26fbf9436a459f848f11"
+  integrity sha512-HPCaEzT39ab3/3mqb6Zl1gVBu0rsKVDYcunNzHp7WUnFLzwgd4H+KcWxfbAHcsLjsJK1xr0jw9zxI8zJdbYUVA==
   dependencies:
+    babel-eslint "^10.1.0"
     bmp-js "^0.1.0"
     file-type "^12.4.1"
     idb-keyval "^3.2.0"
@@ -10844,7 +10852,8 @@ tesseract.js@^2.1.1:
     opencollective-postinstall "^2.0.2"
     regenerator-runtime "^0.13.3"
     resolve-url "^0.2.1"
-    tesseract.js-core "^2.2.0"
+    tesseract.js-core "^4.0.0"
+    wasm-feature-detect "^1.2.11"
     zlibjs "^0.3.1"
 
 test-exclude@^6.0.0:
@@ -10860,6 +10869,11 @@ text-table@^0.2.0, text-table@~0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/text-table/-/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
   integrity sha1-f17oI66AUgfACvLfSoTsP8+lcLQ=
+
+textarea-caret@^3.0.2:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/textarea-caret/-/textarea-caret-3.1.0.tgz#5d5a35bb035fd06b2ff0e25d5359e97f2655087f"
+  integrity sha512-cXAvzO9pP5CGa6NKx0WYHl+8CHKZs8byMkt3PCJBCmq2a34YA9pO1NrQET5pzeqnBjBdToF5No4rrmkDUgQC2Q==
 
 throat@^5.0.0:
   version "5.0.0"
@@ -11422,6 +11436,11 @@ warning@^4.0.0, warning@^4.0.1:
   integrity sha512-rpJyN222KWIvHJ/F53XSZv0Zl/accqHR8et1kpaMTD/fLCRxtV8iX8czMzY7sVZupTI3zcUTg8eycS2kNF9l6w==
   dependencies:
     loose-envify "^1.0.0"
+
+wasm-feature-detect@^1.2.11:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/wasm-feature-detect/-/wasm-feature-detect-1.3.0.tgz#fb3fc5dd4a1ba950a429be843daad67fe048bc42"
+  integrity sha512-w9datO3OReMouWgKOelvu1CozmLK/VbkXOtlzNTanBJpR0uBHyUwS3EYdXf5vBPoHKYS0lpuYo91rpqMNIZM9g==
 
 watchpack-chokidar2@^2.0.0:
   version "2.0.0"
