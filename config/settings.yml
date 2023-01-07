@@ -37,6 +37,8 @@ defaults: &defaults
   trends: true
   trendable_by_default: false
   crop_images: true
+  enable_power_mode: false
+  colorful_power_mode: false
   notification_emails:
     follow: true
     reblog: false
