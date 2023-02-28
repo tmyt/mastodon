@@ -41,8 +41,8 @@ const makeMapStateToProps = () => {
   return mapStateToProps;
 };
 
-@connect(makeMapStateToProps)
-export default @injectIntl
+export default @connect(makeMapStateToProps)
+@injectIntl
 class ComposeForm extends ImmutablePureComponent {
 
   static contextTypes = {
