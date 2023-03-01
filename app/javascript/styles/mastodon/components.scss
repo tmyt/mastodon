@@ -7746,8 +7746,8 @@ noscript {
 
     &:disabled {
       border: 1px dashed lighten($ui-base-color, 16%);
-      pointer-events: none;
       background: transparent;
+      cursor: default;
     }
 
     &.active {

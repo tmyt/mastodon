@@ -86,6 +86,7 @@ class Reaction extends ImmutablePureComponent {
     removeReaction: PropTypes.func.isRequired,
     emojiMap: ImmutablePropTypes.map.isRequired,
     style: PropTypes.object,
+    disabled: PropTypes.bool,
   };
 
   state = {
@@ -107,7 +108,7 @@ class Reaction extends ImmutablePureComponent {
   handleMouseLeave = () => this.setState({ hovered: false });
 
   render () {
-    const { reaction } = this.props;
+    const { reaction, disabled } = this.props;
 
     let shortCode = reaction.get('name');
 
@@ -116,7 +117,7 @@ class Reaction extends ImmutablePureComponent {
     }
 
     return (
-      <button className={classNames('status-reaction-bar__item', { active: reaction.get('me') })} disabled={reaction.get('remote')} onClick={this.handleClick} onMouseEnter={this.handleMouseEnter} onMouseLeave={this.handleMouseLeave} title={`:${shortCode}:`} style={this.props.style}>
+      <button className={classNames('status-reaction-bar__item', { active: reaction.get('me') })} disabled={disabled || reaction.get('remote')} onClick={this.handleClick} onMouseEnter={this.handleMouseEnter} onMouseLeave={this.handleMouseLeave} title={`:${shortCode}:`} style={this.props.style}>
         <span className='status-reaction-bar__item__emoji'><Emoji hovered={this.state.hovered} emoji={reaction.get('name')} emojiMap={this.props.emojiMap} remote={reaction.get('remote')} url={reaction.get('url')} static_url={reaction.get('static_url')} /></span>
         <span className='status-reaction-bar__item__count'><AnimatedNumber value={reaction.get('count')} /></span>
       </button>
@@ -130,6 +131,7 @@ class StatusReactionBar extends ImmutablePureComponent {
 
   static propTypes = {
     status: ImmutablePropTypes.map.isRequired,
+    isSignedIn: PropTypes.bool.isRequired,
     addReaction: PropTypes.func.isRequired,
     removeReaction: PropTypes.func.isRequired,
     emojiMap: ImmutablePropTypes.map.isRequired,
@@ -145,6 +147,7 @@ class StatusReactionBar extends ImmutablePureComponent {
 
   render () {
     const status = this.props.status;
+    const isSignedIn = this.props.isSignedIn;
 
     const reactions = status.get('reactions');
     const visibleReactions = reactions.filter(x => x.get('count') > 0);
@@ -168,6 +171,7 @@ class StatusReactionBar extends ImmutablePureComponent {
                 addReaction={this.props.addReaction}
                 removeReaction={this.props.removeReaction}
                 emojiMap={this.props.emojiMap}
+                disabled={!isSignedIn}
               />
             ))}
           </div>
