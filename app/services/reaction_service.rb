@@ -20,7 +20,7 @@ class ReactionService < BaseService
 
     Trends.statuses.register(status)
 
-    create_notification(reaction)
+    create_notification(account, reaction)
     bump_potential_friendship(account, status)
 
     reaction
@@ -28,11 +28,12 @@ class ReactionService < BaseService
 
   private
 
-  def create_notification(reaction)
+  def create_notification(current_account, reaction)
     status = reaction.status
 
     if status.account.local?
       LocalNotificationWorker.perform_async(status.account_id, reaction.id, 'Reaction', 'reaction')
+      ActivityPub::ReactionsDistributionWorker.perform_async(build_json(reaction), current_account.id, status.id)
     elsif status.account.activitypub?
       ActivityPub::DeliveryWorker.perform_async(build_json(reaction), reaction.account_id, status.account.inbox_url)
     end
