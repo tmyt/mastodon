@@ -112,7 +112,8 @@ services:
     environment:
       - MALLOC_ARENA_MAX=1
       - LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2
-    command: bundle exec sidekiq
+      - DB_POOL=20
+    command: bundle exec sidekiq -c 20
     depends_on:
       # - db
       - redis
