@@ -1,3 +1,6 @@
 @import 'mastodon-light/variables';
 @import 'application';
 @import 'mastodon-light/diff';
+@import 'mastodon-light/codeblock';
+
+@import '~highlight.js/styles/github.css';
