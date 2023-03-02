@@ -300,7 +300,7 @@ class DetailedStatus extends ImmutablePureComponent {
           {media}
 
           <div className='detailed-status-reaction-bar'>
-            <StatusReactionBar status={status} isSignedIn={signedIn} />
+            <StatusReactionBar status={status} signedIn={signedIn}/>
           </div>
 
           <div className='detailed-status__meta'>
