@@ -3,7 +3,7 @@ import hljs from 'highlight.js';
 const BlockElement = 'address|blockquote|center|div|dl|fieldset|form|h[1-6]|hr|noframes|noscript|ol|p|pre|table|ul|br';
 const BlockTag = `<\\/?(?:${BlockElement})[^>]*\\/?>`;
 const AsLineBreak = new RegExp(BlockTag, 'g');
-const CodeBlock = new RegExp(`(?:^|${BlockTag})\\s*(\`\`\`)([a-z0-9-]*)\\s*(?=$|${BlockTag})`, 'g');
+const CodeBlock = new RegExp(`(?:^|${BlockTag})\\s*(\`\`\`)([a-zA-Z0-9-]*)\\s*(?=$|${BlockTag})`, 'g');
 const InlineCodeBlock = /`([^`<>]+)`/g;
 
 function createHighlighIndecis(input) {
@@ -35,7 +35,7 @@ function normalizeCodes(str) {
 function highlightCode(input, lang) {
   const code = normalizeCodes(input);
   try {
-    const hl = hljs.highlight(code, { language: lang || 'plaintext' });
+    const hl = hljs.highlight(code, { language: lang });
     if ('name' in hl._top && hl._top.name === 'Plain text') {
       return code;
     }
@@ -45,7 +45,8 @@ function highlightCode(input, lang) {
   }
 }
 
-function createCodeBlock(input, lang) {
+function createCodeBlock(input, preferredLang) {
+  const lang = (preferredLang || 'plaintext').toLowerCase();
   return `<pre><code data-hl-lang="${lang}" class="hljs">${highlightCode(input, lang)}</code></pre>`;
 }
 
