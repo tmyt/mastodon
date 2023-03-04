@@ -3,7 +3,7 @@ import hljs from 'highlight.js';
 const BlockElement = 'address|blockquote|center|div|dl|fieldset|form|h[1-6]|hr|noframes|noscript|ol|p|pre|table|ul|br';
 const BlockTag = `<\\/?(?:${BlockElement})[^>]*\\/?>`;
 const AsLineBreak = new RegExp(BlockTag, 'g');
-const CodeBlock = new RegExp(`(?:^|${BlockTag})\\s*(\`\`\`)([a-zA-Z0-9-]*)\\s*(?=$|${BlockTag})`, 'g');
+const CodeBlock = new RegExp(`(?:^|${BlockTag})\\s*(\`\`\`)([^\\s]*?)(\\s+.*?)?(?=$|\r|\n|${BlockTag})`, 'g');
 const InlineCodeBlock = /`([^`<>]+)`/g;
 
 function createHighlighIndecis(input) {
