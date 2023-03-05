@@ -14,7 +14,7 @@ class UnreactionService < BaseService
 
   def create_notification(current_account, reaction)
     status = reaction.status
-    ActivityPub::ReactionsDistributionWorker.perform_async(build_json(reaction), current_account.id, status.account.inbox_url)
+    ActivityPub::ReactionsDistributionWorker.perform_async(build_json(reaction), current_account.id, status.account.shared_inbox_url)
   end
 
   def build_json(reaction)
