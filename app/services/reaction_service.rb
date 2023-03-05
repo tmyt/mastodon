@@ -34,7 +34,7 @@ class ReactionService < BaseService
     if status.account.local?
       LocalNotificationWorker.perform_async(status.account_id, reaction.id, 'Reaction', 'reaction')
     end
-    ActivityPub::ReactionsDistributionWorker.perform_async(build_json(reaction), current_account.id, status.account.inbox_url)
+    ActivityPub::ReactionsDistributionWorker.perform_async(build_json(reaction), current_account.id, status.account.shared_inbox_url)
   end
 
   def bump_potential_friendship(account, status)

@@ -6,7 +6,11 @@ class ActivityPub::ReactionsDistributionWorker < ActivityPub::RawDistributionWor
   def perform(json, source_account_id, target_inbox_url)
     @account        = Account.find(source_account_id)
     @json           = json
-    @target_inboxes = [target_inbox_url]
+    if target_inbox_url.empty? then
+      @target_inboxes = []
+    else
+      @target_inboxes = [target_inbox_url]
+    end
 
     distribute!
   rescue ActiveRecord::RecordNotFound
