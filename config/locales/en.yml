@@ -1550,6 +1550,7 @@ en:
     explanation: Because deleting posts is an expensive operation, this is done slowly over time when the server is not otherwise busy. For this reason, your posts may be deleted a while after they reach the age threshold.
     ignore_favs: Ignore favourites
     ignore_reblogs: Ignore boosts
+    ignore_reactions: Ignore reactions
     interaction_exceptions: Exceptions based on interactions
     interaction_exceptions_explanation: Note that there is no guarantee for posts to be deleted if they go below the favourite or boost threshold after having once gone over them.
     keep_direct: Keep direct messages
@@ -1564,6 +1565,8 @@ en:
     keep_self_bookmark_hint: Doesn't delete your own posts if you have bookmarked them
     keep_self_fav: Keep posts you favourited
     keep_self_fav_hint: Doesn't delete your own posts if you have favourited them
+    keep_self_reaction: Keep posts you reated
+    keep_self_reaction_hint: Dosn't delete your own posts if you have reacted to them
     min_age:
       '1209600': 2 weeks
       '15778476': 6 months
@@ -1578,6 +1581,8 @@ en:
     min_favs_hint: Doesn't delete any of your posts that has received at least this amount of favourites. Leave blank to delete posts regardless of their number of favourites
     min_reblogs: Keep posts boosted at least
     min_reblogs_hint: Doesn't delete any of your posts that has been boosted at least this number of times. Leave blank to delete posts regardless of their number of boosts
+    min_reactions: Keep posts reacted at least
+    min_reactions_hint: Doesn't delete any of your posts that has been reacted at least this number of times. Leave blank to delete posts regardless of their number of reactions
   stream_entries:
     pinned: Pinned post
     reblogged: boosted
