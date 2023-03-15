@@ -38,10 +38,11 @@ export const makeGetStatus = () => {
       (state, { id }) => state.getIn(['accounts', state.getIn(['statuses', id, 'account'])]),
       (state, { id }) => state.getIn(['accounts', state.getIn(['statuses', state.getIn(['statuses', id, 'reblog']), 'account'])]),
       (state, { id }) => state.getIn(['statuses', id, 'reactions'])?.flatMap(reaction => reaction.get('users')).map(user => state.getIn(['accounts', user.get('id')])),
+      (state, { id }) => state.getIn(['statuses', state.getIn(['statuses', id, 'reblog']), 'reactions'])?.flatMap(reaction => reaction.get('users')).map(user => state.getIn(['accounts', user.get('id')])),
       getFilters,
     ],
 
-    (statusBase, statusReblog, accountBase, accountReblog, reactedUsers, filters) => {
+    (statusBase, statusReblog, accountBase, accountReblog, reactedUsers, reactedUsersReblog, filters) => {
       if (!statusBase || statusBase.get('isLoading')) {
         return null;
       }
@@ -64,14 +65,25 @@ export const makeGetStatus = () => {
         }
       }
 
-      let reactions = statusBase.get('reactions');
-      if (reactions && reactedUsers) {
+      let reactions = statusReblog
+        ? statusReblog.get('reactions')
+        : statusBase.get('reactions');
+      let users = statusReblog
+        ? reactedUsersReblog
+        : reactedUsers;
+      if (reactions && users) {
         let userIndex = 0;
         for (let i = 0; i < reactions.size; i++) {
           for(let j = 0; j < reactions.getIn([i, 'users']).size; j++) {
-            reactions = reactions.setIn([i, 'users', j], reactedUsers.get(userIndex++));
+            reactions = reactions.setIn([i, 'users', j], users.get(userIndex++));
           }
         }
+      }
+
+      if(statusReblog) {
+        statusReblog = statusReblog.set('reactions', reactions);
+      } else {
+        reactions = statusBase.get('reactions');
       }
 
       return statusBase.withMutations(map => {
