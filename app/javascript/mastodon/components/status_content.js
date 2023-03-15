@@ -224,8 +224,11 @@ class StatusContent extends React.PureComponent {
 
     const content = { __html: status.get('translation') ? status.getIn(['translation', 'content']) : status.get('contentHtml') };
     const spoilerContent = { __html: status.get('spoilerHtml') };
+    const hasOneImage = content.__html.match(/(<img[^>]+>)/g)?.length === 1;
+    const noTextContent = hasOneImage && content.__html.replace(/<[^>]+>|\u200b/g, '').trim().length === 0;
     const lang = status.get('translation') ? intl.locale : status.get('language');
     const classNames = classnames('status__content', {
+      'status__content--with-jumbo-emoji': noTextContent,
       'status__content--with-action': this.props.onClick && this.context.router,
       'status__content--with-spoiler': status.get('spoiler_text').length > 0,
       'status__content--collapsed': renderReadMore,

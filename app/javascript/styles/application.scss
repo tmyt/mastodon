@@ -23,3 +23,6 @@
 @import 'mastodon/dashboard';
 @import 'mastodon/rtl';
 @import 'mastodon/accessibility';
+
+@import 'mastodon/codeblock';
+@import '~highlight.js/styles/github-dark-dimmed.css';

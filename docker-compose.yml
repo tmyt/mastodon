@@ -1,17 +1,18 @@
 version: '3'
+# version: '2.4'
 services:
-  db:
-    restart: always
-    image: postgres:14-alpine
-    shm_size: 256mb
-    networks:
-      - internal_network
-    healthcheck:
-      test: ['CMD', 'pg_isready', '-U', 'postgres']
-    volumes:
-      - ./postgres14:/var/lib/postgresql/data
-    environment:
-      - 'POSTGRES_HOST_AUTH_METHOD=trust'
+  # db:
+  #   restart: always
+  #   image: postgres:14-alpine
+  #   shm_size: 256mb
+  #   networks:
+  #     - internal_network
+  #   healthcheck:
+  #     test: ['CMD', 'pg_isready', '-U', 'postgres']
+  #   volumes:
+  #     - ./postgres14:/var/lib/postgresql/data
+  #   environment:
+  #     - 'POSTGRES_HOST_AUTH_METHOD=trust'
 
   redis:
     restart: always
@@ -23,40 +24,53 @@ services:
     volumes:
       - ./redis:/data
 
-  # es:
+  es:
+    restart: always
+    # image: docker.elastic.co/elasticsearch/elasticsearch:7.17.4
+    image: es_jp
+    environment:
+      - 'ES_JAVA_OPTS=-Xms256m -Xmx256m -Des.enforce.bootstrap.checks=true'
+      - 'xpack.license.self_generated.type=basic'
+      - 'xpack.security.enabled=false'
+      - 'xpack.watcher.enabled=false'
+      - 'xpack.graph.enabled=false'
+      - 'xpack.ml.enabled=false'
+      - 'bootstrap.memory_lock=true'
+      - 'cluster.name=es-mastodon'
+      - 'discovery.type=single-node'
+      - 'thread_pool.write.queue_size=1000'
+    networks:
+      - external_network
+      - internal_network
+    healthcheck:
+      test:
+        [
+          'CMD-SHELL',
+          'curl --silent --fail localhost:9200/_cluster/health || exit 1',
+        ]
+    volumes:
+      - ./elasticsearch:/usr/share/elasticsearch/data
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    ports:
+      - '127.0.0.1:9200:9200'
+
+  # s3proxy:
   #   restart: always
-  #   image: docker.elastic.co/elasticsearch/elasticsearch:7.17.4
-  #   environment:
-  #     - "ES_JAVA_OPTS=-Xms512m -Xmx512m -Des.enforce.bootstrap.checks=true"
-  #     - "xpack.license.self_generated.type=basic"
-  #     - "xpack.security.enabled=false"
-  #     - "xpack.watcher.enabled=false"
-  #     - "xpack.graph.enabled=false"
-  #     - "xpack.ml.enabled=false"
-  #     - "bootstrap.memory_lock=true"
-  #     - "cluster.name=es-mastodon"
-  #     - "discovery.type=single-node"
-  #     - "thread_pool.write.queue_size=1000"
+  #   image: andrewgaul/s3proxy
   #   networks:
-  #      - external_network
-  #      - internal_network
-  #   healthcheck:
-  #      test: ["CMD-SHELL", "curl --silent --fail localhost:9200/_cluster/health || exit 1"]
-  #   volumes:
-  #      - ./elasticsearch:/usr/share/elasticsearch/data
-  #   ulimits:
-  #     memlock:
-  #       soft: -1
-  #       hard: -1
-  #     nofile:
-  #       soft: 65536
-  #       hard: 65536
-  #   ports:
-  #     - '127.0.0.1:9200:9200'
+  #     - internal_network
+  #     - external_network
+  #   env_file: .env.production
 
   web:
-    build: .
-    image: tootsuite/mastodon
+    # build: .
+    image: ghcr.io/tmyt/tech.onsen.mastodon:edge
     restart: always
     env_file: .env.production
     command: bash -c "rm -f /mastodon/tmp/pids/server.pid; bundle exec rails s -p 3000"
@@ -69,15 +83,16 @@ services:
     ports:
       - '127.0.0.1:3000:3000'
     depends_on:
-      - db
+      # - db
       - redis
-      # - es
+      - es
+      # - s3proxy
     volumes:
       - ./public/system:/mastodon/public/system
 
   streaming:
-    build: .
-    image: tootsuite/mastodon
+    # build: .
+    image: ghcr.io/tmyt/tech.onsen.mastodon:edge
     restart: always
     env_file: .env.production
     command: node ./streaming
@@ -90,17 +105,21 @@ services:
     ports:
       - '127.0.0.1:4000:4000'
     depends_on:
-      - db
+      # - db
       - redis
 
   sidekiq:
-    build: .
-    image: tootsuite/mastodon
+    # build: .
+    image: ghcr.io/tmyt/tech.onsen.mastodon:edge
     restart: always
     env_file: .env.production
-    command: bundle exec sidekiq
+    environment:
+      - MALLOC_ARENA_MAX=1
+      - LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2
+      - DB_POOL=20
+    command: bundle exec sidekiq -c 20
     depends_on:
-      - db
+      # - db
       - redis
     networks:
       - external_network
@@ -109,6 +128,7 @@ services:
       - ./public/system:/mastodon/public/system
     healthcheck:
       test: ['CMD-SHELL', "ps aux | grep '[s]idekiq\ 6' || false"]
+    mem_limit: 384m
 
   ## Uncomment to enable federation with tor instances along with adding the following ENV variables
   ## http_proxy=http://privoxy:8118

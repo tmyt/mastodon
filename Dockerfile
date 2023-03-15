@@ -72,7 +72,8 @@ RUN apt-get update && \
         ca-certificates \
         tzdata \
         libreadline8 \
-        tini && \
+        tini \
+        git && \
     ln -s /opt/mastodon /mastodon
 
 # Note: no, cleaning here since Debian does this automatically

@@ -74,6 +74,7 @@ class Reaction extends ImmutablePureComponent {
     removeReaction: PropTypes.func.isRequired,
     emojiMap: ImmutablePropTypes.map.isRequired,
     style: PropTypes.object,
+    disabled: PropTypes.bool,
   };
 
   state = {
