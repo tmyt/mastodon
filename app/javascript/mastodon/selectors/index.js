@@ -80,17 +80,17 @@ export const makeGetStatus = () => {
         }
       }
 
-      if(statusReblog) {
+      if (statusReblog) {
         statusReblog = statusReblog.set('reactions', reactions);
-      } else {
-        reactions = statusBase.get('reactions');
       }
 
       return statusBase.withMutations(map => {
         map.set('reblog', statusReblog);
         map.set('account', accountBase);
         map.set('matched_filters', filtered);
-        map.set('reactions', reactions);
+        if (!statusReblog) {
+          map.set('reactions', reactions);
+        }
       });
     },
   );
