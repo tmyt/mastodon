@@ -11,7 +11,8 @@ class REST::InstanceSerializer < ActiveModel::Serializer
 
   attributes :domain, :title, :version, :source_url, :description,
              :usage, :thumbnail, :languages, :configuration,
-             :registrations
+             :registrations,
+             :fedibird_capabilities
 
   has_one :contact, serializer: ContactSerializer
   has_many :rules, serializer: REST::RuleSerializer
@@ -78,6 +79,14 @@ class REST::InstanceSerializer < ActiveModel::Serializer
         enabled: TranslationService.configured?,
       },
     }
+  end
+
+  def fedibird_capabilities
+    [
+      :emoji_reaction,
+      :enable_wide_emoji,
+      :enable_wide_emoji_reaction,
+    ]
   end
 
   def registrations

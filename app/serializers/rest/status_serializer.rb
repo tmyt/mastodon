@@ -14,6 +14,8 @@ class REST::StatusSerializer < ActiveModel::Serializer
   attribute :muted, if: :current_user?
   attribute :bookmarked, if: :current_user?
   attribute :pinned, if: :pinnable?
+  # Fedibird compatibility
+  attribute :emoji_reactioned, if: :current_user?
   has_many :filtered, serializer: REST::FilterResultSerializer, if: :current_user?
 
   attribute :content, unless: :source_requested?
@@ -28,6 +30,8 @@ class REST::StatusSerializer < ActiveModel::Serializer
   has_many :tags
   has_many :emojis, serializer: REST::CustomEmojiSerializer
   has_many :reactions, serializer: REST::StatusReactionSerializer
+  # Fedibird compatibility
+  has_many :emoji_reactions, serializer: REST::StatusReactionSerializer
 
   has_one :preview_card, key: :card, serializer: REST::PreviewCardSerializer
   has_one :preloadable_poll, key: :poll, serializer: REST::PollSerializer
@@ -101,6 +105,14 @@ class REST::StatusSerializer < ActiveModel::Serializer
 
   def reactions
     object.reactions_hash(current_user&.account)
+  end
+
+  def emoji_reactioned
+    self.reacted
+  end
+
+  def emoji_reactions
+    self.reactions
   end
 
   def reblogged

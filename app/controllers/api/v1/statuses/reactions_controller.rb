@@ -5,10 +5,15 @@ class Api::V1::Statuses::ReactionsController < Api::BaseController
 
   before_action -> { doorkeeper_authorize! :write, :'write:favourites' }
   before_action :require_user!
-  before_action :set_status, only: [:create]
+  before_action :set_status, only: [:create, :update]
 
   def create
     ReactionService.new.call(current_account, @status, params[:name])
+    render json: @status, serializer: REST::StatusSerializer
+  end
+
+  def update
+    ReactionService.new.call(current_account, @status, params[:id])
     render json: @status, serializer: REST::StatusSerializer
   end
 
