@@ -78,6 +78,11 @@ class REST::InstanceSerializer < ActiveModel::Serializer
       translation: {
         enabled: TranslationService.configured?,
       },
+
+      emoji_reactions: {
+        max_reactions: 32767,
+        max_reactions_per_account: 1,
+      }
     }
   end
 
