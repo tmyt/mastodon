@@ -27,7 +27,7 @@
     class: Scheduler::IndexingScheduler
     queue: scheduler
   vacuum_scheduler:
-    cron: '<%= Random.rand(0..59) %> <%= Random.rand(3..5) %> * * *'
+    cron: '<%= Random.rand(0..59) %> <%= Random.rand(18..20) %> * * *'
     class: Scheduler::VacuumScheduler
     queue: scheduler
   follow_recommendations_scheduler:
