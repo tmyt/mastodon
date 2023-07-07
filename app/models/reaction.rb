@@ -47,13 +47,11 @@ class Reaction < ApplicationRecord
 
   def set_custom_emoji
     return if custom_emoji.present?
-    if name.present?
-      if self.domain_present?
-        self.custom_emoji = CustomEmoji.find_by(disabled: false, shortcode: self.shortcode, domain: self.domain)
-      else
-        self.custom_emoji = CustomEmoji.local.find_by(disabled: false, shortcode: name)
-      end
-    end
+    self.custom_emoji = if domain_present?
+                          CustomEmoji.find_by(disabled: false, shortcode: shortcode, domain: domain)
+                        else
+                          CustomEmoji.local.find_by(disabled: false, shortcode: name)
+                        end
   end
 
   def increment_cache_counters
@@ -66,18 +64,18 @@ class Reaction < ApplicationRecord
   end
 
   def trim_domain
-    self.name = name.split("@")[0] if name.include? "@"
+    self.name = shortcode if domain_present?
   end
 
   def domain_present?
-    name.include? "@"
+    name.include? '@'
   end
 
   def shortcode
-    name.split("@")[0]
+    name.split('@')[0]
   end
 
   def domain
-    name.split("@")[1]
+    name.split('@')[1]
   end
 end

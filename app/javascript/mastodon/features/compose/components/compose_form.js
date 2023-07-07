@@ -33,9 +33,9 @@ const messages = defineMessages({
 });
 
 const makeMapStateToProps = () => {
-  const mapStateToProps = (state, props) => ({
+  const mapStateToProps = (state) => ({
     enablePowerMode: state.getIn(['meta', 'enable_power_mode']),
-    colorfulPowerMode: state.getIn(['meta', 'colorful_power_mode'])
+    colorfulPowerMode: state.getIn(['meta', 'colorful_power_mode']),
   });
 
   return mapStateToProps;
