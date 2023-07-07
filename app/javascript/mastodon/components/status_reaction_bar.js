@@ -25,8 +25,8 @@ class Emoji extends React.PureComponent {
     static_url: PropTypes.string,
   };
 
-  render () {
-    const { emoji, emojiMap, hovered, domain, url, static_url } = this.props;
+  render() {
+    const { emoji, hovered, domain, url, static_url } = this.props;
 
     if (unicodeMapping[emoji]) {
       const { filename, shortCode } = unicodeMapping[this.props.emoji];
@@ -84,10 +84,15 @@ class Reaction extends ImmutablePureComponent {
   handleClick = () => {
     const { reaction, status, addReaction, removeReaction } = this.props;
 
+    const shortCode = reaction.get('name');
+    const domain = reaction.get('domain');
+
+    const name = domain ? `${shortCode}@${domain}` : shortCode;
+
     if (status.get('reacted')) {
-      removeReaction(status, reaction.get('name'));
+      removeReaction(status, name);
     } else {
-      addReaction(status, reaction.get('name'));
+      addReaction(status, name);
     }
   };
 
@@ -103,7 +108,7 @@ class Reaction extends ImmutablePureComponent {
     return this.target;
   };
 
-  render () {
+  render() {
     const { reaction, signedIn } = this.props;
     const { hovered } = this.state;
 
@@ -116,13 +121,17 @@ class Reaction extends ImmutablePureComponent {
       shortCode = unicodeMapping[shortCode].shortCode;
       title = `:${shortCode}:`;
     } else {
-      title = domain ? `:${shortCode}@${domain}:` : `:${shortCode}:`;
+      if (!domain || shortCode.endsWith(`@${domain}`)) {
+        title = `:${shortCode}:`;
+      } else {
+        title = `${shortCode}@${domain}`;
+      }
     }
 
     return (
       <React.Fragment>
         <span ref={this.setTargetRef} className='status-reaction-bar__wrapper' onMouseEnter={this.handleMouseEnter} onMouseLeave={this.handleMouseLeave}>
-          <button className={classNames('status-reaction-bar__item', { active: reaction.get('me') })} disabled={reaction.get('domain') || !signedIn} onClick={this.handleClick} title={title} style={this.props.style}>
+          <button className={classNames('status-reaction-bar__item', { active: reaction.get('me') })} disabled={!signedIn} onClick={this.handleClick} title={title} style={this.props.style}>
             <span className='status-reaction-bar__item__emoji'><Emoji hovered={hovered} emoji={reaction.get('name')} emojiMap={this.props.emojiMap} domain={reaction.get('domain')} url={reaction.get('url')} static_url={reaction.get('static_url')} signedIn={signedIn} /></span>
             <span className='status-reaction-bar__item__count'><AnimatedNumber value={reaction.get('count')} /></span>
           </button>
@@ -171,15 +180,15 @@ class StatusReactionBar extends ImmutablePureComponent {
     emojiMap: ImmutablePropTypes.map.isRequired,
   };
 
-  willEnter () {
+  willEnter() {
     return { scale: reduceMotion ? 1 : 0 };
   }
 
-  willLeave () {
+  willLeave() {
     return { scale: reduceMotion ? 0 : spring(0, { stiffness: 170, damping: 26 }) };
   }
 
-  render () {
+  render() {
     const status = this.props.status;
     const signedIn = this.props.signedIn;
 
