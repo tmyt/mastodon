@@ -10,13 +10,11 @@ class REST::EmojiReactionSerializer < ActiveModel::Serializer
   attribute :domain, if: :custom_emoji?
 
   def count
-    return 0 if !self.related_reaction.present?
-    self.related_reaction.count
+    related_reaction.count
   end
 
   def me
-    return false if !self.related_reaction.present?
-    self.related_reaction.me
+    related_reaction.me
   end
 
   def account_ids
@@ -43,7 +41,7 @@ class REST::EmojiReactionSerializer < ActiveModel::Serializer
   def related_reaction
     return @related_reaction_cache if @related_reaction_cache.present?
     @related_reaction_cache = object.status.reactions_hash(current_user&.account).find{|r|
-      (!self.custom_emoji? || r[:domain] == self.domain) && r[:name] == object.name
+      (!custom_emoji? || r.custom_emoji.domain == domain) && r.name == object.name
     }
   end
 end
