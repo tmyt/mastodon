@@ -29,7 +29,7 @@ class Reaction < ApplicationRecord
   validates :name, presence: true
   validates_with StatusReactionValidator
 
-  before_validation :set_custom_emoji
+  before_validation :set_custom_emoji, :trim_domain
 
   before_validation do
     self.status = status.reblog if status&.reblog?
@@ -47,7 +47,11 @@ class Reaction < ApplicationRecord
 
   def set_custom_emoji
     return if custom_emoji.present?
-    self.custom_emoji = CustomEmoji.local.find_by(disabled: false, shortcode: name) if name.present?
+    self.custom_emoji = if domain_present?
+                          CustomEmoji.find_by(disabled: false, shortcode: shortcode, domain: domain)
+                        else
+                          CustomEmoji.local.find_by(disabled: false, shortcode: name)
+                        end
   end
 
   def increment_cache_counters
@@ -57,5 +61,21 @@ class Reaction < ApplicationRecord
   def decrement_cache_counters
     return if association(:status).loaded? && status.marked_for_destruction?
     status&.decrement_count!(:reactions_count)
+  end
+
+  def trim_domain
+    self.name = shortcode if domain_present?
+  end
+
+  def domain_present?
+    name.include? '@'
+  end
+
+  def shortcode
+    name.split('@')[0]
+  end
+
+  def domain
+    name.split('@')[1]
   end
 end
