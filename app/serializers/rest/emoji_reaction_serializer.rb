@@ -10,10 +10,12 @@ class REST::EmojiReactionSerializer < ActiveModel::Serializer
   attribute :domain, if: :custom_emoji?
 
   def count
+    return 0 if !self.related_reaction.present?
     self.related_reaction.count
   end
 
   def me
+    return false if !self.related_reaction.present?
     self.related_reaction.me
   end
 
