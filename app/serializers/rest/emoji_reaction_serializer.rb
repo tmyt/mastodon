@@ -41,7 +41,11 @@ class REST::EmojiReactionSerializer < ActiveModel::Serializer
   def related_reaction
     return @related_reaction_cache if @related_reaction_cache.present?
     @related_reaction_cache = object.status.reactions_hash(current_user&.account).find{|r|
-      (!custom_emoji? || r.custom_emoji.domain == domain) && r.name == object.name
+      if r.custom_emoji.present?
+        r.custom_emoji.present? && r.custom_emoji.domain == domain && r.name == object.name
+      else
+        r.name == object.name
+      end
     }
   end
 end
