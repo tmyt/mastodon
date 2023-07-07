@@ -11,6 +11,11 @@ class REST::NotificationSerializer < ActiveModel::Serializer
     object.id.to_s
   end
 
+  def type
+    return "emoji_reaction" if object.type == :reaction
+    object.type
+  end
+
   def status_type?
     [:favourite, :reaction, :reblog, :status, :mention, :poll, :update].include?(object.type)
   end
