@@ -30,6 +30,7 @@ class REST::EmojiReactionSerializer < ActiveModel::Serializer
   end
   
   def domain
+    return nil unless object.custom_emoji.present?
     object.custom_emoji.domain
   end
 
