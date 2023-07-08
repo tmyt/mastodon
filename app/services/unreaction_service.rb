@@ -11,6 +11,15 @@ class UnreactionService < BaseService
     reaction
   end
 
+  def call_all(account, status)
+    reactions = Reaction.where(account: account, status: status)
+    reactions.destroy_all
+    reactions.each do |reaction|
+      create_notification(account, reaction)
+    end
+    reactions
+  end
+
   private
 
   def create_notification(current_account, reaction)
