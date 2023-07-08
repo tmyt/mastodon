@@ -23,7 +23,9 @@ class Reaction < ApplicationRecord
 
   has_one :notification, as: :activity, dependent: :destroy
 
-  validates :status_id, uniqueness: { scope: :account_id }
+  validates :status_id, uniqueness: { 
+    scope: [:account_id, :name, :custom_emoji_id]
+  }
 
   belongs_to :custom_emoji, optional: true
   validates :name, presence: true
@@ -41,6 +43,20 @@ class Reaction < ApplicationRecord
   def users
     account_ids = Reaction.where(status_id: status_id, name: name, custom_emoji_id: custom_emoji_id).select(:account_id)
     Account.where(id: account_ids).limit(11)
+  end
+
+  def self.find_by_name(account, status_id, name)
+    shortcode = name unless name.include?('@')
+    shortcode = name.split('@')[0] if name.include?('@')
+    domain = name.split('@')[1] if name.include?('@')
+
+    customEmoji = CustomEmoji.find_by(shortcode: shortcode, domain: domain) if domain.present?
+    customEmoji = CustomEmoji.local.find_by(shortcode: shortcode) unless domain.present?
+
+    reaction = account.reactions.find_by(status_id: status_id, custom_emoji_id: customEmoji.id) if customEmoji.present?
+    reaction = account.reactions.find_by(status_id: status_id, name: shortcode) unless customEmoji.present?
+
+    reaction
   end
 
   private

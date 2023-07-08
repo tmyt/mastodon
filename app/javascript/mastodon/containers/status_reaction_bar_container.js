@@ -12,7 +12,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   addReaction: (status, name) => dispatch(reaction(status, name)),
-  removeReaction: (status) => dispatch(unreaction(status)),
+  removeReaction: (status, name) => dispatch(unreaction(status, name)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(StatusReactionBar);

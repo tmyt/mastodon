@@ -123,12 +123,7 @@ export default class ReactionDropdown extends React.PureComponent {
   };
 
   handleClick = ({ type }) => {
-    if (this.props.status.get('reacted')) {
-      const reaction = this.props.status.get('reactions').find(x => x.get('me'));
-      this.props.onReaction(this.props.status, reaction.get('name'));
-    }
-
-    if (this.props.status.get('reacted') || this.state.id === this.props.openDropdownId) {
+    if (this.state.id === this.props.openDropdownId) {
       this.handleClose();
     } else {
       this.props.onOpen(this.state.id, this.handleItemClick, type !== 'click');

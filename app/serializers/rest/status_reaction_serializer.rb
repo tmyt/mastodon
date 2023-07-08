@@ -3,7 +3,7 @@
 class REST::StatusReactionSerializer < ActiveModel::Serializer
   include RoutingHelper
 
-  attributes :name, :count
+  attributes :name, :count, :custom_emoji_id
 
   attribute :me, if: :current_user?
   attribute :url, if: :custom_emoji?

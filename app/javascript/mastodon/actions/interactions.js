@@ -220,11 +220,11 @@ export function reaction(status, name) {
   };
 }
 
-export function unreaction(status) {
+export function unreaction(status, name) {
   return (dispatch, getState) => {
     dispatch(unreactionRequest(status));
 
-    api(getState).post(`/api/v1/statuses/${status.get('id')}/unreaction`).then(response => {
+    api(getState).post(`/api/v1/statuses/${status.get('id')}/unreaction`, { name: name }).then(response => {
       dispatch(importFetchedStatus(response.data));
       dispatch(unreactionSuccess(status));
     }).catch(error => {
