@@ -453,7 +453,7 @@ Rails.application.routes.draw do
 
           # Fedibird copatible endpoints
           resources :emoji_reactions, only: [:update, :destroy], constraints: { id: /[^\/]+/ }, controller: 'reactions'
-          post :emoji_unreactions, to: 'reactions#destroy'
+          post :emoji_unreactions, to: 'reactions#destroy_all'
 
           resource :bookmark, only: :create
           post :unbookmark, to: 'bookmarks#destroy'
