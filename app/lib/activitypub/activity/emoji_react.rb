@@ -10,7 +10,7 @@ class ActivityPub::Activity::EmojiReact < ActivityPub::Activity
     
     process_tags
 
-    reaction = original_status.reactions.create!(account: @account, name: @json['content']) if @json['tag'].nil? && !@account.reacted?(original_status)
+    reaction = original_status.reactions.create!(account: @account, name: @json['content']) if @json['tag'].nil? && !@account.reacted_with?(original_status, @json['content'])
 
     reaction = original_status.reactions.create!(account: @account, name: @json['content']&.delete(':'), custom_emoji: @emoji) if @emoji.present? && !@account.custom_emoji_reacted?(original_status, @emoji)
 
