@@ -15,7 +15,6 @@ import {
   favourite,
   reaction,
   unfavourite,
-  unreaction,
   bookmark,
   unbookmark,
   reblog,
@@ -261,11 +260,7 @@ class Status extends ImmutablePureComponent {
     const { signedIn } = this.context.identity;
 
     if (signedIn) {
-      if (status.get('reacted')) {
-        dispatch(unreaction(status));
-      } else {
-        dispatch(reaction(status, name));
-      }
+      dispatch(reaction(status, name));
     }
   };
 

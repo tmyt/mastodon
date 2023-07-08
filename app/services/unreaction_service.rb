@@ -3,8 +3,9 @@
 class UnreactionService < BaseService
   include Payloadable
 
-  def call(account, status)
-    reaction = Reaction.find_by!(account: account, status: status)
+  def call(account, status, name)
+    reaction = Reaction.find_by_name(account, status.id, name)
+    throw ActiveRecord::RecordNotFound unless reaction.present?
     reaction.destroy!
     create_notification(account, reaction)
     reaction

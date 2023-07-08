@@ -89,7 +89,7 @@ class Reaction extends ImmutablePureComponent {
 
     const name = domain ? `${shortCode}@${domain}` : shortCode;
 
-    if (status.get('reacted')) {
+    if (reaction.get('me')) {
       removeReaction(status, name);
     } else {
       addReaction(status, name);
@@ -139,8 +139,8 @@ class Reaction extends ImmutablePureComponent {
         <Overlay show={hovered} offset={[0, 5]} placement={'top'} flip target={this.findTarget} popperConfig={{ strategy: 'fixed' }}>
           {({ props, placement }) => (
             <div {...props} >
-              <div class={`dropdown-animation ${placement}`}>
-                <div class='status-reaction-bar__item__users'>
+              <div className={`dropdown-animation ${placement}`}>
+                <div className='status-reaction-bar__item__users'>
                   <div className='status-reaction-bar__item__users__emoji'>
                     <span><Emoji hovered={this.state.hovered} emoji={reaction.get('name')} emojiMap={this.props.emojiMap} domain={reaction.get('domain')} url={reaction.get('url')} static_url={reaction.get('static_url')} signedIn={signedIn} /></span>
                     <span className='status-reaction-bar__item__users__emoji__code'>{title}</span>

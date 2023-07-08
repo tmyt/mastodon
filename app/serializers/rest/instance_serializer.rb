@@ -81,7 +81,7 @@ class REST::InstanceSerializer < ActiveModel::Serializer
 
       emoji_reactions: {
         max_reactions: 32767,
-        max_reactions_per_account: 1,
+        max_reactions_per_account: 128,
       },
     }
   end

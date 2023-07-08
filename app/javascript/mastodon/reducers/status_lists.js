@@ -108,6 +108,10 @@ const removeOneFromList = (state, listType, status) => {
   return state.updateIn([listType, 'items'], (list) => list.delete(status.get('id')));
 };
 
+const hasMyReaction = (status) => {
+  return status.get('reactions').find((reaction) => reaction.get('me'));
+};
+
 export default function statusLists(state = initialState, action) {
   switch(action.type) {
   case FAVOURITED_STATUSES_FETCH_REQUEST:
@@ -157,6 +161,9 @@ export default function statusLists(state = initialState, action) {
   case REACTION_SUCCESS:
     return prependOneToList(state, 'reactions', action.status);
   case UNREACTION_SUCCESS:
+    if (hasMyReaction(action.status)) {
+      return state;
+    }
     return removeOneFromList(state, 'reactions', action.status);
   case BOOKMARK_SUCCESS:
     return prependOneToList(state, 'bookmarks', action.status);
