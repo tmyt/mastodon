@@ -18,12 +18,15 @@ class Api::V1::Statuses::ReactionsController < Api::BaseController
   end
 
   def destroy
-    reaction = Reaction.find_by_name(current_account, params[:status_id], params[:name])
+    name = params[:name]
+    name = params[:id] if name.nil?
+
+    reaction = Reaction.find_by_name(current_account, params[:status_id], name)
     reactions = Reaction.select('id').where(account_id: current_account.id, status_id: params[:status_id])
   
     if reaction
       @status = reaction.status
-      UnreactionWorker.perform_async(current_account.id, @status.id, params[:name])
+      UnreactionWorker.perform_async(current_account.id, @status.id, name)
     else
       @status = Status.find(params[:status_id])
       authorize @status, :show?
