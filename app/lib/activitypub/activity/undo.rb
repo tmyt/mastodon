@@ -145,8 +145,8 @@ class ActivityPub::Activity::Undo < ActivityPub::Activity
           end
         end
       end
-    elsif @account.reacted?(status)
-      reaction = status.reactions.where(account: @account).first
+    elsif @account.reacted_with?(status, @object['content'])
+      reaction = status.reactions.where(account: @account, name: @object['content']).first
       reaction&.destroy  
     else
       delete_later!(object_uri)
