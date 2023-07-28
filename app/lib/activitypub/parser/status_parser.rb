@@ -68,8 +68,8 @@ class ActivityPub::Parser::StatusParser
     @object['inReplyTo'].present?
   end
 
-  def misskeyQuote
-    @object['_misskey_quote'].present?
+  def quote
+    @object['quoteUrl'].present?
   end
 
   def sensitive

@@ -119,7 +119,7 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
         created_at: @status_parser.created_at,
         edited_at: @status_parser.edited_at && @status_parser.edited_at != @status_parser.created_at ? @status_parser.edited_at : nil,
         override_timestamps: @options[:override_timestamps],
-        reply: @status_parser.reply,
+        reply: @status_parser.reply || @status_parser.quote,
         sensitive: @account.sensitized? || @status_parser.sensitive || false,
         visibility: @status_parser.visibility,
         thread: replied_to_status,
@@ -365,7 +365,7 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
   end
 
   def in_reply_to_uri
-    value_or_id(@object['inReplyTo']) || value_or_id(@object['_misskey_quote'])
+    value_or_id(@object['inReplyTo']) || value_or_id(@object['quoteUrl'])
   end
 
   def converted_text
