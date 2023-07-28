@@ -365,7 +365,7 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
   end
 
   def in_reply_to_uri
-    value_or_id(@object['inReplyTo'])
+    value_or_id(@object['inReplyTo']) || value_or_id(@object['_misskey_quote'])
   end
 
   def converted_text
