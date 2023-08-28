@@ -1293,6 +1293,10 @@ ja:
       body: "%{name}さんにお気に入り登録された、あなたの投稿があります:"
       subject: "%{name}さんにお気に入りに登録されました"
       title: 新たなお気に入り登録
+    reaction:
+      body: "%{name}さんにリアクションされた、あなたの投稿があります:"
+      subject: "%{name}さんにリアクションされました"
+      title: 新たなリアクション
     follow:
       body: "%{name}さんにフォローされています！"
       subject: "%{name}さんにフォローされています"
