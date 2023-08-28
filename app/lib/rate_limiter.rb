@@ -10,7 +10,7 @@ class RateLimiter
     }.freeze,
 
     statuses: {
-      limit: 300,
+      limit: 600,
       period: 5.minutes.freeze,
     }.freeze,
 
