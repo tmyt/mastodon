@@ -7,7 +7,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import { supportsPassiveEvents } from 'detect-passive-events';
 import { buildCustomEmojis, categoriesFromEmojis } from '../features/emoji/emoji';
 import { assetHost } from 'mastodon/utils/config';
-import CircularProgress from './loading_indicator';
+import { CircularProgress } from './circular_progress';
 
 const messages = defineMessages({
   emoji: { id: 'emoji_button.label', defaultMessage: 'Insert emoji' },
@@ -291,7 +291,6 @@ class ReactionPickerMenu extends React.PureComponent {
 
 }
 
-export default @injectIntl
 class ReactionPicker extends React.PureComponent {
 
   static propTypes = {
@@ -323,3 +322,5 @@ class ReactionPicker extends React.PureComponent {
   }
 
 }
+
+export default injectIntl(ReactionPicker);

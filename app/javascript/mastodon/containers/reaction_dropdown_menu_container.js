@@ -16,14 +16,21 @@ const mapDispatchToProps = (dispatch, { status, onReaction, scrollKey }) => ({
       dispatch(fetchRelationships([status.getIn(['account', 'id'])]));
     }
 
-    dispatch(isUserTouching() ? openModal('REACTION', {
-      status,
-      onReaction,
+    dispatch(isUserTouching() ? openModal({
+      modalType: 'REACTION',
+      modalProps: {
+        status,
+        onReaction,
+      }
     }) : openDropdownMenu(id, keyboard, scrollKey));
   },
 
   onClose(id) {
-    dispatch(closeModal('REACTION'));
+    console.trace("")
+    dispatch(closeModal({
+      modalType: 'REACTION',
+      ignoreFocus: false,
+    }));
     dispatch(closeDropdownMenu(id));
   },
 });

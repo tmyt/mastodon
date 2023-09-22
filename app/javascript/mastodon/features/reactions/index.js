@@ -5,9 +5,9 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import ColumnHeader from 'mastodon/components/column_header';
-import Icon from 'mastodon/components/icon';
+import { Icon } from 'mastodon/components/icon';
 import { fetchReactions } from 'mastodon/actions/interactions';
-import LoadingIndicator from 'mastodon/components/loading_indicator';
+import { LoadingIndicator } from 'mastodon/components/loading_indicator';
 import ScrollableList from 'mastodon/components/scrollable_list';
 import AccountContainer from 'mastodon/containers/account_container';
 import Column from 'mastodon/features/ui/components/column';
@@ -21,8 +21,6 @@ const mapStateToProps = (state, props) => ({
   accountIds: state.getIn(['user_lists', 'reacted_by', props.params.statusId]),
 });
 
-export default @connect(mapStateToProps)
-@injectIntl
 class Reactions extends ImmutablePureComponent {
 
   static propTypes = {
@@ -90,3 +88,5 @@ class Reactions extends ImmutablePureComponent {
   }
 
 }
+
+export default connect(mapStateToProps)(injectIntl(Reactions));

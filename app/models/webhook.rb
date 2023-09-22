@@ -11,13 +11,18 @@
 #  enabled    :boolean          default(TRUE), not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  template   :text
 #
 
 class Webhook < ApplicationRecord
   EVENTS = %w(
     account.approved
     account.created
+    account.updated
     report.created
+    report.updated
+    status.created
+    status.updated
   ).freeze
 
   attr_writer :current_account
@@ -30,6 +35,7 @@ class Webhook < ApplicationRecord
 
   validate :validate_events
   validate :validate_permissions
+  validate :validate_template
 
   before_validation :strip_events
   before_validation :generate_secret
@@ -54,8 +60,10 @@ class Webhook < ApplicationRecord
     case event
     when 'account.approved', 'account.created', 'account.updated'
       :manage_users
-    when 'report.created'
+    when 'report.created', 'report.updated'
       :manage_reports
+    when 'status.created', 'status.updated'
+      :view_devops
     end
   end
 
@@ -70,7 +78,7 @@ class Webhook < ApplicationRecord
   end
 
   def strip_events
-    self.events = events.map { |str| str.strip.presence }.compact if events.present?
+    self.events = events.filter_map { |str| str.strip.presence } if events.present?
   end
 
   def generate_secret
