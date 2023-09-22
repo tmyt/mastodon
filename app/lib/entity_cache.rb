@@ -20,6 +20,7 @@ class EntityCache
     return [] if shortcodes.empty?
 
     cached       = Rails.cache.read_multi(*shortcodes.map { |shortcode| to_key(:emoji, shortcode, domain) })
+    uncached     = {}
     uncached_ids = []
 
     shortcodes.each do |shortcode|
@@ -30,7 +31,8 @@ class EntityCache
       uncached = CustomEmoji.where(shortcode: shortcodes, domain: domain, disabled: false).index_by(&:shortcode)
       uncached.each_value { |item| Rails.cache.write(to_key(:emoji, item.shortcode, domain), item, expires_in: MAX_EXPIRATION) }
     end
-
+print "cached: #{cached}\n"
+print "uncached: #{uncached}\n"
     shortcodes.filter_map { |shortcode| cached[to_key(:emoji, shortcode, domain)] || uncached[shortcode] }
   end
 

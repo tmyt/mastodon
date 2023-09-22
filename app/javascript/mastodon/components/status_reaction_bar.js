@@ -6,13 +6,13 @@ import { injectIntl } from 'react-intl';
 import { autoPlayGif, reduceMotion } from 'mastodon/initial_state';
 import unicodeMapping from 'mastodon/features/emoji/emoji_unicode_mapping_light';
 import classNames from 'classnames';
-import AnimatedNumber from 'mastodon/components/animated_number';
+import { AnimatedNumber } from 'mastodon/components/animated_number';
 import TransitionMotion from 'react-motion/lib/TransitionMotion';
 import spring from 'react-motion/lib/spring';
 import { assetHost } from 'mastodon/utils/config';
 import Overlay from 'react-overlays/Overlay';
-import Avatar from './avatar';
-import DisplayName from './display_name';
+import { Avatar } from './avatar';
+import { DisplayName } from './display_name';
 
 class Emoji extends React.PureComponent {
 
@@ -169,7 +169,6 @@ class Reaction extends ImmutablePureComponent {
 
 }
 
-export default @injectIntl
 class StatusReactionBar extends ImmutablePureComponent {
 
   static propTypes = {
@@ -224,3 +223,5 @@ class StatusReactionBar extends ImmutablePureComponent {
   }
 
 }
+
+export default injectIntl(StatusReactionBar);

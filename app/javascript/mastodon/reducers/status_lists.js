@@ -1,3 +1,9 @@
+import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet } from 'immutable';
+
+import {
+  ACCOUNT_BLOCK_SUCCESS,
+  ACCOUNT_MUTE_SUCCESS,
+} from '../actions/accounts';
 import {
   FAVOURITED_STATUSES_FETCH_REQUEST,
   FAVOURITED_STATUSES_FETCH_SUCCESS,
@@ -33,7 +39,6 @@ import {
   TRENDS_STATUSES_EXPAND_SUCCESS,
   TRENDS_STATUSES_EXPAND_FAIL,
 } from '../actions/trends';
-import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet } from 'immutable';
 import {
   FAVOURITE_SUCCESS,
   UNFAVOURITE_SUCCESS,
@@ -44,10 +49,6 @@ import {
   PIN_SUCCESS,
   UNPIN_SUCCESS,
 } from '../actions/interactions';
-import {
-  ACCOUNT_BLOCK_SUCCESS,
-  ACCOUNT_MUTE_SUCCESS,
-} from '../actions/accounts';
 
 const initialState = ImmutableMap({
   favourites: ImmutableMap({

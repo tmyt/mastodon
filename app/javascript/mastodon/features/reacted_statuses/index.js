@@ -22,8 +22,6 @@ const mapStateToProps = state => ({
   hasMore: !!state.getIn(['status_lists', 'reactions', 'next']),
 });
 
-export default @connect(mapStateToProps)
-@injectIntl
 class Reactions extends ImmutablePureComponent {
 
   static propTypes = {
@@ -106,3 +104,5 @@ class Reactions extends ImmutablePureComponent {
   }
 
 }
+
+export default connect(mapStateToProps)(injectIntl(Reactions));
