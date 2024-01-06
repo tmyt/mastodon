@@ -24,6 +24,7 @@ const messages = defineMessages({
   firehose: { id: 'column.firehose', defaultMessage: 'Live feeds' },
   direct: { id: 'navigation_bar.direct', defaultMessage: 'Private mentions' },
   favourites: { id: 'navigation_bar.favourites', defaultMessage: 'Favorites' },
+  reactions: { id: 'navigation_bar.reactions', defaultMessage: 'Reactions' },
   bookmarks: { id: 'navigation_bar.bookmarks', defaultMessage: 'Bookmarks' },
   lists: { id: 'navigation_bar.lists', defaultMessage: 'Lists' },
   preferences: { id: 'navigation_bar.preferences', defaultMessage: 'Preferences' },
@@ -53,23 +54,29 @@ class NavigationPanel extends Component {
     const { intl } = this.props;
     const { signedIn, disabledAccountId } = this.context.identity;
 
+    let banner = undefined;
+
+    if(transientSingleColumn)
+      banner = (<div className='switch-to-advanced'>
+        {intl.formatMessage(messages.openedInClassicInterface)}
+        {" "}
+        <a href={`/deck${location.pathname}`} className='switch-to-advanced__toggle'>
+          {intl.formatMessage(messages.advancedInterface)}
+        </a>
+      </div>);
+
     return (
       <div className='navigation-panel'>
         <div className='navigation-panel__logo'>
           <Link to='/' className='column-link column-link--logo'><WordmarkLogo /></Link>
-
-          {transientSingleColumn ? (
-            <div class='switch-to-advanced'>
-              {intl.formatMessage(messages.openedInClassicInterface)}
-              {" "}
-              <a href={`/deck${location.pathname}`} class='switch-to-advanced__toggle'>
-                {intl.formatMessage(messages.advancedInterface)}
-              </a>
-            </div>
-          ) : (
-            <hr />
-          )}
+          {!banner && <hr />}
         </div>
+
+        {banner &&
+          <div class='navigation-panel__banner'>
+            {banner}
+          </div>
+        }
 
         {signedIn && (
           <>
@@ -101,6 +108,7 @@ class NavigationPanel extends Component {
             <ColumnLink transparent to='/conversations' icon='at' text={intl.formatMessage(messages.direct)} />
             <ColumnLink transparent to='/bookmarks' icon='bookmark' text={intl.formatMessage(messages.bookmarks)} />
             <ColumnLink transparent to='/favourites' icon='star' text={intl.formatMessage(messages.favourites)} />
+            <ColumnLink transparent to='/reactions' icon='smile-o' text={intl.formatMessage(messages.reactions)} />
             <ColumnLink transparent to='/lists' icon='list-ul' text={intl.formatMessage(messages.lists)} />
 
             <ListPanel />

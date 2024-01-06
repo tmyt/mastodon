@@ -377,14 +377,6 @@ class User < ApplicationRecord
     send_reset_password_instructions
   end
 
-  def show_all_media?
-    setting_display_media == 'show_all'
-  end
-
-  def hide_all_media?
-    setting_display_media == 'hide_all'
-  end
-
   protected
 
   def send_devise_notification(notification, *args, **kwargs)

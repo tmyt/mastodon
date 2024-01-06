@@ -26,7 +26,7 @@ class Notification < ApplicationRecord
     'FollowRequest' => :follow_request,
     'Favourite' => :favourite,
     'Poll' => :poll,
-    'Reaction'      => :reaction,
+    'Reaction' => :reaction,
   }.freeze
 
   TYPES = %i(

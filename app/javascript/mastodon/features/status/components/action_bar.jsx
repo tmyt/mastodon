@@ -8,10 +8,10 @@ import classNames from 'classnames';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
 
+import Reaction_dropdown_menu_container from 'mastodon/containers/reaction_dropdown_menu_container';
 import { PERMISSION_MANAGE_USERS, PERMISSION_MANAGE_FEDERATION } from 'mastodon/permissions';
 
 import { IconButton } from '../../../components/icon_button';
-import Reaction_dropdown_menu_container from 'mastodon/containers/reaction_dropdown_menu_container';
 import DropdownMenuContainer from '../../../containers/dropdown_menu_container';
 import { me } from '../../../initial_state';
 

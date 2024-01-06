@@ -70,7 +70,22 @@ class Webhook < ApplicationRecord
   private
 
   def validate_events
-    errors.add(:events, :invalid) if events.any? { |e| !EVENTS.include?(e) }
+    errors.add(:events, :invalid) if events.any? { |e| EVENTS.exclude?(e) }
+  end
+
+  def validate_permissions
+    errors.add(:events, :invalid_permissions) if defined?(@current_account) && required_permissions.any? { |permission| !@current_account.user_role.can?(permission) }
+  end
+
+  def validate_template
+    return if template.blank?
+
+    begin
+      parser = Webhooks::PayloadRenderer::TemplateParser.new
+      parser.parse(template)
+    rescue Parslet::ParseFailed
+      errors.add(:template, :invalid)
+    end
   end
 
   def validate_permissions
