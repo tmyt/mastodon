@@ -1715,7 +1715,7 @@ en:
     keep_self_bookmark_hint: Doesn't delete your own posts if you have bookmarked them
     keep_self_fav: Keep posts you favorited
     keep_self_fav_hint: Doesn't delete your own posts if you have favorited them
-    keep_self_reaction: Keep posts you reated
+    keep_self_reaction: Keep posts you reacted
     keep_self_reaction_hint: Dosn't delete your own posts if you have reacted to them
     min_age:
       '1209600': 2 weeks

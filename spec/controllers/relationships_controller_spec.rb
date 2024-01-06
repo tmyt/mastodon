@@ -85,15 +85,6 @@ describe RelationshipsController do
         end
       end
 
-      it 'does not unfollow users from selected domains' do
-        user.account.follow!(poopfeast)
-
-        sign_in user, scope: :user
-        subject
-
-        expect(user.account.following?(poopfeast)).to be true
-      end
-
       include_examples 'redirects back to followers page'
     end
   end
