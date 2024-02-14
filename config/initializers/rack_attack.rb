@@ -13,6 +13,38 @@ class Rack::Attack
       )
     end
 
+    def current_session
+      return @current_session if defined?(@current_session)
+  
+      proxy = Class.new {
+        def initialize(env)
+          @env = env
+        end
+
+        def key_generator
+          @env["action_dispatch.key_generator"]
+        end
+
+        def signed_cookie_salt
+          @env["action_dispatch.signed_cookie_salt"]
+        end
+
+        def signed_cookie_digest
+          @env["action_dispatch.signed_cookie_digest"]
+        end
+
+        def cookies_rotations
+          @env["action_dispatch.cookies_rotations"]
+        end
+
+        def cookies_serializer
+          @env["action_dispatch.cookies_serializer"]
+        end
+      }.new(@env)
+      jar = ActionDispatch::Cookies::CookieJar.build(proxy, cookies.to_h)
+      @current_session = SessionActivation.find_by(session_id: jar.signed['_session_id']) if jar.signed['_session_id'].present?
+    end
+
     def remote_ip
       @remote_ip ||= (@env["action_dispatch.remote_ip"] || ip).to_s
     end
@@ -35,6 +67,14 @@ class Rack::Attack
 
     def authenticated_token_id
       authenticated_token&.id
+    end
+
+    def current_session_user_id
+      current_session&.user_id
+    end
+
+    def nosession?
+      !current_session_user_id
     end
 
     def unauthenticated?
@@ -82,12 +122,12 @@ class Rack::Attack
     req.authenticated_user_id if req.post? && req.path.match?(%r{\A/api/v\d+/media\z}i)
   end
 
-  throttle('throttle_authenticated_media_proxy', limit: 150, period: 5.minutes) do |req|
-    req.authenticated_user_id if req.path.start_with?('/media_proxy')
+  throttle('throttle_with_session_media_proxy', limit: 150, period: 5.minutes) do |req|
+    req.current_session_user_id if req.path.start_with?('/media_proxy')
   end
 
   throttle('throttle_unauthenticated_media_proxy', limit: 30, period: 10.minutes) do |req|
-    req.throttleable_remote_ip if req.path.start_with?('/media_proxy') && req.unauthenticated?
+    req.throttleable_remote_ip if req.path.start_with?('/media_proxy') && req.nosession?
   end
 
   throttle('throttle_api_sign_up', limit: 5, period: 30.minutes) do |req|
