@@ -23,6 +23,11 @@ services:
       test: ['CMD', 'redis-cli', 'ping']
     volumes:
       - ./redis:/data
+    logging:
+      driver: json-file
+      options:
+        max-size: 100m
+        max-file: '5'
 
   es:
     restart: always
@@ -59,6 +64,11 @@ services:
         hard: 65536
     ports:
       - '127.0.0.1:9200:9200'
+    logging:
+      driver: json-file
+      options:
+        max-size: 100m
+        max-file: '5'
 
   # s3proxy:
   #   restart: always
@@ -89,6 +99,11 @@ services:
       # - s3proxy
     volumes:
       - ./public/system:/mastodon/public/system
+    logging:
+      driver: json-file
+      options:
+        max-size: 100m
+        max-file: '5'
 
   streaming:
     # build: .
@@ -107,6 +122,11 @@ services:
     depends_on:
       # - db
       - redis
+    logging:
+      driver: json-file
+      options:
+        max-size: 100m
+        max-file: '5'
 
   sidekiq:
     # build: .
@@ -114,10 +134,10 @@ services:
     restart: always
     env_file: .env.production
     environment:
-      - MALLOC_ARENA_MAX=1
+      - MALLOC_ARENA_MAX=2
       - LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2
-      - DB_POOL=20
-    command: bundle exec sidekiq -c 20
+      - DB_POOL=15
+    command: bundle exec sidekiq -c 10 -q pull -q scheduler
     depends_on:
       # - db
       - redis
@@ -129,6 +149,61 @@ services:
     healthcheck:
       test: ['CMD-SHELL', "ps aux | grep '[s]idekiq\ 6' || false"]
     mem_limit: 384m
+    logging:
+      driver: json-file
+      options:
+        max-size: 100m
+        max-file: '5'
+
+  sidekiq-2:
+    image: ghcr.io/tmyt/tech.onsen.mastodon:edge
+    restart: always
+    env_file: .env.production
+    environment:
+      - MALLOC_ARENA_MAX=2
+      - LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2
+      - DB_POOL=10
+    command: bundle exec sidekiq -c 8 -q default,8 -q push,6 -q mailers,2
+    depends_on:
+      - redis
+    networks:
+      - external_network
+      - internal_network
+    volumes:
+      - ./public/system:/mastodon/public/system
+    healthcheck:
+      test: ['CMD-SHELL', "ps aux | grep '[s]idekiq\ 6' || false"]
+    mem_limit: 384m
+    logging:
+      driver: json-file
+      options:
+        max-size: 100m
+        max-file: '5'
+
+  sidekiq-3:
+    image: ghcr.io/tmyt/tech.onsen.mastodon:edge
+    restart: always
+    env_file: .env.production
+    environment:
+      - MALLOC_ARENA_MAX=2
+      - LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2
+      - DB_POOL=10
+    command: bundle exec sidekiq -c 7 -q ingress,4
+    depends_on:
+      - redis
+    networks:
+      - external_network
+      - internal_network
+    volumes:
+      - ./public/system:/mastodon/public/system
+    healthcheck:
+      test: ['CMD-SHELL', "ps aux | grep '[s]idekiq\ 6' || false"]
+    mem_limit: 384m
+    logging:
+      driver: json-file
+      options:
+        max-size: 100m
+        max-file: '5'
 
   ## Uncomment to enable federation with tor instances along with adding the following ENV variables
   ## http_proxy=http://privoxy:8118
