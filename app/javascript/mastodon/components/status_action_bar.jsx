@@ -9,9 +9,9 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { connect } from 'react-redux';
 
 import { PERMISSION_MANAGE_USERS, PERMISSION_MANAGE_FEDERATION } from 'mastodon/permissions';
-import ReactionDropdownMenuContainer from '../containers/reaction_dropdown_menu_container';
 
 import DropdownMenuContainer from '../containers/dropdown_menu_container';
+import ReactionDropdownMenuContainer from '../containers/reaction_dropdown_menu_container';
 import { me } from '../initial_state';
 
 import { IconButton } from './icon_button';

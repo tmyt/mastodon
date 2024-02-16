@@ -1,12 +1,19 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
+
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import { EmojiPicker as EmojiPickerAsync } from '../features/ui/util/async-components';
+
 import classNames from 'classnames';
+
 import ImmutablePropTypes from 'react-immutable-proptypes';
+
 import { supportsPassiveEvents } from 'detect-passive-events';
-import { buildCustomEmojis, categoriesFromEmojis } from '../features/emoji/emoji';
+
 import { assetHost } from 'mastodon/utils/config';
+
+import { buildCustomEmojis, categoriesFromEmojis } from '../features/emoji/emoji';
+import { EmojiPicker as EmojiPickerAsync } from '../features/ui/util/async-components';
+
 import { CircularProgress } from './circular_progress';
 
 const messages = defineMessages({

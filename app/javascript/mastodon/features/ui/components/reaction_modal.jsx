@@ -1,15 +1,20 @@
-import React from 'react';
-import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
+import React from 'react';
+
 import { defineMessages, injectIntl } from 'react-intl';
-import StatusContent from '../../../components/status_content';
-import Avatar from '../../../components/avatar';
-import RelativeTimestamp from '../../../components/relative_timestamp';
-import DisplayName from '../../../components/display_name';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import Icon from 'mastodon/components/icon';
-import AttachmentList from 'mastodon/components/attachment_list';
+
 import classNames from 'classnames';
+
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+
+import AttachmentList from 'mastodon/components/attachment_list';
+import Icon from 'mastodon/components/icon';
+
+import Avatar from '../../../components/avatar';
+import DisplayName from '../../../components/display_name';
+import RelativeTimestamp from '../../../components/relative_timestamp';
+import StatusContent from '../../../components/status_content';
 import ReactionPickerContainer from '../../../containers/reaction_picker_container';
 
 const messages = defineMessages({
@@ -62,7 +67,7 @@ class ReactionModal extends ImmutablePureComponent {
         <div className='reaction-modal__container'>
           <div className={classNames('status', `status-${status.get('visibility')}`, 'light')}>
             <div className='status__info'>
-              <a href={`/@${status.getIn(['account', 'acct'])}\/${status.get('id')}`} className='status__relative-time' target='_blank' rel='noopener noreferrer'>
+              <a href={`/@${status.getIn(['account', 'acct'])}/${status.get('id')}`} className='status__relative-time' target='_blank' rel='noopener noreferrer'>
                 <span className='status__visibility-icon'><Icon id={visibilityIcon.icon} title={visibilityIcon.text} /></span>
                 <RelativeTimestamp timestamp={status.get('created_at')} />
               </a>

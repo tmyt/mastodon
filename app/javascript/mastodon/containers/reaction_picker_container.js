@@ -1,9 +1,10 @@
-import { connect } from 'react-redux';
-import ReactionPicker from '../components/reaction_picker';
-import { changeSetting } from '../actions/settings';
-import { createSelector } from 'reselect';
 import { Map as ImmutableMap } from 'immutable';
-import { useEmoji } from '../actions/emojis';
+import { connect } from 'react-redux';
+import { createSelector } from 'reselect';
+
+import { useEmoji as pickEmoji } from '../actions/emojis';
+import { changeSetting } from '../actions/settings';
+import ReactionPicker from '../components/reaction_picker';
 
 const perLine = 8;
 const lines   = 2;
@@ -72,7 +73,7 @@ const mapDispatchToProps = (dispatch, { onPickEmoji }) => ({
   },
 
   onPickEmoji: emoji => {
-    dispatch(useEmoji(emoji));
+    dispatch(pickEmoji(emoji));
 
     if (onPickEmoji) {
       onPickEmoji(emoji);
