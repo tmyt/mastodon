@@ -1,7 +1,9 @@
-import { openDropdownMenu, closeDropdownMenu } from '../actions/dropdown_menu';
-import { fetchRelationships } from 'mastodon/actions/accounts';
-import { openModal, closeModal } from '../actions/modal';
 import { connect } from 'react-redux';
+
+import { fetchRelationships } from 'mastodon/actions/accounts';
+
+import { openDropdownMenu, closeDropdownMenu } from '../actions/dropdown_menu';
+import { openModal, closeModal } from '../actions/modal';
 import ReactionDropdownMenu from '../components/reaction_dropdown_menu';
 import { isUserTouching } from '../is_mobile';
 
@@ -26,7 +28,6 @@ const mapDispatchToProps = (dispatch, { status, onReaction, scrollKey }) => ({
   },
 
   onClose(id) {
-    console.trace("")
     dispatch(closeModal({
       modalType: 'REACTION',
       ignoreFocus: false,

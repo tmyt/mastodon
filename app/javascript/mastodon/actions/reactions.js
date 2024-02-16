@@ -1,4 +1,5 @@
 import api, { getLinks } from '../api';
+
 import { importFetchedStatuses } from './importer';
 
 export const REACTED_STATUSES_FETCH_REQUEST = 'REACTED_STATUSES_FETCH_REQUEST';

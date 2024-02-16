@@ -12,6 +12,7 @@ import { HotKeys } from 'react-hotkeys';
 import { Icon }  from 'mastodon/components/icon';
 import PictureInPicturePlaceholder from 'mastodon/components/picture_in_picture_placeholder';
 
+import StatusReactionBar from '../containers/status_reaction_bar_container';
 import Card from '../features/status/components/card';
 // We use the component (and not the container) since we do not want
 // to use the progress bar to show download progress
@@ -26,7 +27,6 @@ import { getHashtagBarForStatus } from './hashtag_bar';
 import { RelativeTimestamp } from './relative_timestamp';
 import StatusActionBar from './status_action_bar';
 import StatusContent from './status_content';
-import StatusReactionBar from '../containers/status_reaction_bar_container';
  
 const domParser = new DOMParser();
 

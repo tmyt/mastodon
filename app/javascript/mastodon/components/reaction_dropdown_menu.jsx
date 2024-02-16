@@ -1,12 +1,18 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import { IconButton } from './icon_button';
-import Overlay from 'react-overlays/Overlay';
-import { supportsPassiveEvents } from 'detect-passive-events';
+import React from 'react';
+
 import classNames from 'classnames';
+
+import ImmutablePropTypes from 'react-immutable-proptypes';
+
+import { supportsPassiveEvents } from 'detect-passive-events';
+import Overlay from 'react-overlays/Overlay';
+
 import { CircularProgress } from 'mastodon/components/circular_progress';
+
 import ReactionPickerContainer from '../containers/reaction_picker_container';
+
+import { IconButton } from './icon_button';
 
 const listenerOptions = supportsPassiveEvents ? { passive: true } : false;
 let id = 1000;
@@ -123,7 +129,7 @@ export default class ReactionDropdown extends React.PureComponent {
     this.props.onReaction(this.props.status, data.native.replace(/:/g, ''));
   };
 
-  handleClick = ({ type, ...e }) => {
+  handleClick = ({ type }) => {
     if (this.state.id === this.props.openDropdownId) {
       this.handleClose();
     } else {
@@ -219,7 +225,7 @@ export default class ReactionDropdown extends React.PureComponent {
     );
 
     return (
-      <React.Fragment>
+      <>
         <span ref={this.setTargetRef}>
           {button}
         </span>
@@ -238,7 +244,7 @@ export default class ReactionDropdown extends React.PureComponent {
             </div>
           )}
         </Overlay>
-      </React.Fragment>
+      </>
     );
   }
 

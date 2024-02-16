@@ -1,16 +1,23 @@
-import React from 'react';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
+import React from 'react';
+
 import { injectIntl } from 'react-intl';
-import { autoPlayGif, reduceMotion } from 'mastodon/initial_state';
-import unicodeMapping from 'mastodon/features/emoji/emoji_unicode_mapping_light';
+
 import classNames from 'classnames';
-import { AnimatedNumber } from 'mastodon/components/animated_number';
+
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+
+
 import TransitionMotion from 'react-motion/lib/TransitionMotion';
 import spring from 'react-motion/lib/spring';
-import { assetHost } from 'mastodon/utils/config';
 import Overlay from 'react-overlays/Overlay';
+
+import { AnimatedNumber } from 'mastodon/components/animated_number';
+import unicodeMapping from 'mastodon/features/emoji/emoji_unicode_mapping_light';
+import { autoPlayGif, reduceMotion } from 'mastodon/initial_state';
+import { assetHost } from 'mastodon/utils/config';
+
 import { Avatar } from './avatar';
 import { DisplayName } from './display_name';
 
@@ -129,7 +136,7 @@ class Reaction extends ImmutablePureComponent {
     }
 
     return (
-      <React.Fragment>
+      <>
         <span ref={this.setTargetRef} className='status-reaction-bar__wrapper' onMouseEnter={this.handleMouseEnter} onMouseLeave={this.handleMouseLeave}>
           <button className={classNames('status-reaction-bar__item', { active: reaction.get('me') })} disabled={!signedIn} onClick={this.handleClick} title={title} style={this.props.style}>
             <span className='status-reaction-bar__item__emoji'><Emoji hovered={hovered} emoji={reaction.get('name')} emojiMap={this.props.emojiMap} domain={reaction.get('domain')} url={reaction.get('url')} static_url={reaction.get('static_url')} signedIn={signedIn} /></span>
@@ -163,7 +170,7 @@ class Reaction extends ImmutablePureComponent {
             </div>
           )}
         </Overlay>
-      </React.Fragment>
+      </>
     );
   }
 
