@@ -11,6 +11,7 @@ import { fetchReactedStatuses, expandReactedStatuses } from 'mastodon/actions/re
 import ColumnHeader from 'mastodon/components/column_header';
 import StatusList from 'mastodon/components/status_list';
 import Column from 'mastodon/features/ui/components/column';
+import SmileIcon from '@/material-icons/400-24px/sentiment_satisfied.svg?react';
 
 const messages = defineMessages({
   heading: { id: 'column.reactions', defaultMessage: 'Reacted posts' },
@@ -75,6 +76,7 @@ class Reactions extends ImmutablePureComponent {
       <Column bindToDocument={!multiColumn} ref={this.setRef} label={intl.formatMessage(messages.heading)}>
         <ColumnHeader
           icon='smile-o'
+          iconComponent={SmileIcon}
           title={intl.formatMessage(messages.heading)}
           onPin={this.handlePin}
           onMove={this.handleMove}

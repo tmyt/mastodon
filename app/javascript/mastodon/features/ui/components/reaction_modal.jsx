@@ -9,11 +9,11 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 
 import AttachmentList from 'mastodon/components/attachment_list';
-import Icon from 'mastodon/components/icon';
+import { Icon } from 'mastodon/components/icon';
 
-import Avatar from '../../../components/avatar';
-import DisplayName from '../../../components/display_name';
-import RelativeTimestamp from '../../../components/relative_timestamp';
+import { Avatar } from '../../../components/avatar';
+import { DisplayName } from '../../../components/display_name';
+import { RelativeTimestamp } from '../../../components/relative_timestamp';
 import StatusContent from '../../../components/status_content';
 import ReactionPickerContainer from '../../../containers/reaction_picker_container';
 
@@ -24,7 +24,6 @@ const messages = defineMessages({
   direct_short: { id: 'privacy.direct.short', defaultMessage: 'Direct' },
 });
 
-export default @injectIntl
 class ReactionModal extends ImmutablePureComponent {
 
   static contextTypes = {
@@ -97,3 +96,5 @@ class ReactionModal extends ImmutablePureComponent {
   }
 
 }
+
+export default injectIntl(ReactionModal);

@@ -14,9 +14,10 @@ import spring from 'react-motion/lib/spring';
 import Overlay from 'react-overlays/Overlay';
 
 import { AnimatedNumber } from 'mastodon/components/animated_number';
-import unicodeMapping from 'mastodon/features/emoji/emoji_unicode_mapping_light';
+import { unicodeMapping } from 'mastodon/features/emoji/emoji_unicode_mapping_light';
 import { autoPlayGif, reduceMotion } from 'mastodon/initial_state';
 import { assetHost } from 'mastodon/utils/config';
+import { identityContextPropShape, withIdentity } from 'mastodon/identity_context';
 
 import { Avatar } from './avatar';
 import { DisplayName } from './display_name';
@@ -179,6 +180,7 @@ class Reaction extends ImmutablePureComponent {
 class StatusReactionBar extends ImmutablePureComponent {
 
   static propTypes = {
+    identity: identityContextPropShape,
     status: ImmutablePropTypes.map.isRequired,
     signedIn: PropTypes.bool.isRequired,
     addReaction: PropTypes.func.isRequired,
@@ -196,7 +198,7 @@ class StatusReactionBar extends ImmutablePureComponent {
 
   render() {
     const status = this.props.status;
-    const signedIn = this.props.signedIn;
+    const { signedIn } = this.props.identity || {};
 
     const reactions = status.get('reactions');
     const visibleReactions = reactions.filter(x => x.get('count') > 0);
@@ -231,4 +233,4 @@ class StatusReactionBar extends ImmutablePureComponent {
 
 }
 
-export default injectIntl(StatusReactionBar);
+export default withIdentity(injectIntl(StatusReactionBar));
