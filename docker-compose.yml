@@ -14,7 +14,7 @@ services:
   #     - ./postgres14:/var/lib/postgresql/data
   #   environment:
   #     - 'POSTGRES_HOST_AUTH_METHOD=trust'
-  
+
   redis:
     restart: always
     image: redis:7-alpine
@@ -112,7 +112,7 @@ services:
     # build:
     #   dockerfile: ./streaming/Dockerfile
     #   context: .
-    image: ghcr.io/tmyt/tech.onsen.mastodon:edge
+    image: ghcr.io/tmyt/tech.onsen.mastodon-streaming:edge
     restart: always
     env_file: .env.production
     command: node ./streaming/index.js
