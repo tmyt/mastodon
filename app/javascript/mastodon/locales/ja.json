@@ -531,6 +531,7 @@
   "notification.own_poll": "アンケートが終了しました",
   "notification.poll": "投票したアンケートが終了しました",
   "notification.reaction": "{name}さんがあなたの投稿にリアクションしました",
+  "notification.reaction.name_and_others_with_link": "{name}さん<a>ほか{count, plural, other {#人}}</a>があなたの投稿にリアクションしました",
   "notification.reblog": "{name}さんがあなたの投稿をブーストしました",
   "notification.reblog.name_and_others_with_link": "{name}さん<a>ほか{count, plural, other {#人}}</a>にブーストされました",
   "notification.relationships_severance_event": "{name} との関係が失われました",

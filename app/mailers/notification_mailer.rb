@@ -10,7 +10,7 @@ class NotificationMailer < ApplicationMailer
     before_action :set_status
     after_action :thread_by_conversation!
   end
-  before_action :set_account, only: [:follow, :favourite, :reblog, :follow_request]
+  before_action :set_account, only: [:follow, :favourite, :reblog, :reaction, :follow_request]
   after_action :set_list_headers!
 
   before_deliver :verify_functional_user

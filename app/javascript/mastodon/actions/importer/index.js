@@ -77,7 +77,7 @@ export function importFetchedStatuses(statuses) {
       }
 
       status.reactions.flatMap(reaction => reaction.users).forEach(user => pushUnique(accounts, user));
-      
+
       if (status.card) {
         status.card.authors.forEach(author => author.account && pushUnique(accounts, author.account));
       }

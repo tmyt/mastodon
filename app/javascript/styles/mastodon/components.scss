@@ -10815,6 +10815,10 @@ noscript {
     color: $gold-star;
   }
 
+  &--reaction &__icon {
+    color: $gold-star;
+  }
+
   &--reblog &__icon {
     color: $valid-value-color;
   }
