@@ -57,7 +57,7 @@ jobs:
     runs-on: ubuntu-latest
 
     concurrency:
-      group: ${{ github.ref }}
+      group: ${{ github.ref }}-streaming
       cancel-in-progress: true
 
     steps:
