@@ -17,7 +17,7 @@ class Api::V1::ReactionsController < Api::BaseController
   end
 
   def cached_reactions
-    cache_collection(results.map(&:status), Status)
+    preload_collection(results.map(&:status), Status)
   end
 
   def results

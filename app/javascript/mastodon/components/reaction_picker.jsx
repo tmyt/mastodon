@@ -66,7 +66,7 @@ class ModifierPickerMenu extends React.PureComponent {
     this.props.onSelect(e.currentTarget.getAttribute('data-index') * 1);
   };
 
-  componentWillReceiveProps (nextProps) {
+  UNSAFE__componentWillReceiveProps (nextProps) {
     if (nextProps.active) {
       this.attachListeners();
     } else {

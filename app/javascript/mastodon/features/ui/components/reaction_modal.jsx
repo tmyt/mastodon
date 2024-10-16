@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import { defineMessages, injectIntl } from 'react-intl';
+import { injectIntl } from 'react-intl';
 
 import classNames from 'classnames';
 
@@ -9,22 +9,14 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 
 import AttachmentList from 'mastodon/components/attachment_list';
-import Icon from 'mastodon/components/icon';
+import { VisibilityIcon } from 'mastodon/components/visibility_icon';
 
-import Avatar from '../../../components/avatar';
-import DisplayName from '../../../components/display_name';
-import RelativeTimestamp from '../../../components/relative_timestamp';
+import { Avatar } from '../../../components/avatar';
+import { DisplayName } from '../../../components/display_name';
+import { RelativeTimestamp } from '../../../components/relative_timestamp';
 import StatusContent from '../../../components/status_content';
 import ReactionPickerContainer from '../../../containers/reaction_picker_container';
 
-const messages = defineMessages({
-  public_short: { id: 'privacy.public.short', defaultMessage: 'Public' },
-  unlisted_short: { id: 'privacy.unlisted.short', defaultMessage: 'Unlisted' },
-  private_short: { id: 'privacy.private.short', defaultMessage: 'Followers-only' },
-  direct_short: { id: 'privacy.direct.short', defaultMessage: 'Direct' },
-});
-
-export default @injectIntl
 class ReactionModal extends ImmutablePureComponent {
 
   static contextTypes = {
@@ -38,10 +30,6 @@ class ReactionModal extends ImmutablePureComponent {
     intl: PropTypes.object.isRequired,
   };
 
-  handlePickEmoji = (data) => {
-    this.props.onReaction(this.props.status, data.native.replace(/:/g, ''));
-  };
-
   handleAccountClick = (e) => {
     if (e.button === 0 && !(e.ctrlKey || e.metaKey)) {
       e.preventDefault();
@@ -51,24 +39,15 @@ class ReactionModal extends ImmutablePureComponent {
   };
 
   render () {
-    const { status, intl } = this.props;
-
-    const visibilityIconInfo = {
-      'public': { icon: 'globe', text: intl.formatMessage(messages.public_short) },
-      'unlisted': { icon: 'unlock', text: intl.formatMessage(messages.unlisted_short) },
-      'private': { icon: 'lock', text: intl.formatMessage(messages.private_short) },
-      'direct': { icon: 'at', text: intl.formatMessage(messages.direct_short) },
-    };
-
-    const visibilityIcon = visibilityIconInfo[status.get('visibility')];
+    const { status } = this.props;
 
     return (
       <div className='modal-root__modal reaction-modal'>
         <div className='reaction-modal__container'>
-          <div className={classNames('status', `status-${status.get('visibility')}`, 'light')}>
+          <div className={classNames('status', `status-${status.get('visibility')}`)}>
             <div className='status__info'>
               <a href={`/@${status.getIn(['account', 'acct'])}/${status.get('id')}`} className='status__relative-time' target='_blank' rel='noopener noreferrer'>
-                <span className='status__visibility-icon'><Icon id={visibilityIcon.icon} title={visibilityIcon.text} /></span>
+                <span className='status__visibility-icon'><VisibilityIcon visibility={status.get('visibility')} /></span>
                 <RelativeTimestamp timestamp={status.get('created_at')} />
               </a>
 
@@ -90,10 +69,12 @@ class ReactionModal extends ImmutablePureComponent {
               />
             )}
           </div>
-          <ReactionPickerContainer onPickEmoji={this.handlePickEmoji} onClose={this.props.onClose} />
+          <ReactionPickerContainer onPickEmoji={this.props.onReaction} onClose={this.props.onClose} />
         </div>
       </div>
     );
   }
 
 }
+
+export default injectIntl(ReactionModal);

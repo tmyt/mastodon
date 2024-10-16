@@ -104,6 +104,7 @@ export default class ReactionDropdown extends React.PureComponent {
   static propTypes = {
     children: PropTypes.node,
     icon: PropTypes.string,
+    iconComponent: PropTypes.func,
     onReaction: PropTypes.func.isRequired,
     loading: PropTypes.bool,
     size: PropTypes.number,
@@ -133,7 +134,7 @@ export default class ReactionDropdown extends React.PureComponent {
     if (this.state.id === this.props.openDropdownId) {
       this.handleClose();
     } else {
-      this.props.onOpen(this.state.id, this.handleItemClick, type !== 'click');
+      this.props.onOpen(this.state.id, this.handlePickEmoji, type !== 'click');
     }
   };
 
@@ -192,6 +193,7 @@ export default class ReactionDropdown extends React.PureComponent {
   render () {
     const {
       icon,
+      iconComponent,
       size,
       title,
       disabled,
@@ -213,6 +215,7 @@ export default class ReactionDropdown extends React.PureComponent {
       <IconButton
         className='smile-o-icon'
         icon={icon}
+        iconComponent={iconComponent}
         title={title}
         active={status.get('reacted')}
         disabled={disabled}
@@ -232,7 +235,7 @@ export default class ReactionDropdown extends React.PureComponent {
         <Overlay show={open} offset={[5, 5]} placement={'bottom'} flip target={this.findTarget} popperConfig={{ strategy: 'fixed' }}>
           {({ props, arrowProps, placement }) => (
             <div {...props}>
-              <div className={`dropdown-animation dropdown-menu ${placement}`}>
+              <div className={`dropdown-animation ${placement}`}>
                 <div className={`dropdown-menu__arrow ${placement}`} {...arrowProps} />
                 <ReactionDropdownMenu
                   loading={loading}
