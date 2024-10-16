@@ -6462,6 +6462,8 @@ a.status-card {
   }
 
   .reaction-picker {
+    position: relative;
+
     .emoji-mart-bar:first-child {
       border-top-width: 1px;
       border-top-left-radius: 0;
@@ -6473,10 +6475,6 @@ a.status-card {
     .loading-indicator {
       margin-top: auto;
     }
-
-    .emoji-picker-dropdown__modifiers {
-      top: 200px;
-    }
   }
 }
 
@@ -6485,6 +6483,16 @@ a.status-card {
   height: 300px;
 
   .reaction-picker__menu {
+    position: relative;
+    margin-top: 5px;
+    z-index: 2;
+    background: var(--dropdown-background-color);
+    -webkit-backdrop-filter: var(--background-filter);
+    backdrop-filter: var(--background-filter);
+    border: 1px solid var(--dropdown-border-color);
+    box-shadow: var(--dropdown-shadow);
+    border-radius: 5px;
+
     .loading-indicator {
       margin-top: auto;
     }
@@ -6492,7 +6500,6 @@ a.status-card {
     .emoji-mart-bar {
       &:first-child {
         border-bottom-width: 1px;
-        background: $ui-secondary-color;
       }
     }
 

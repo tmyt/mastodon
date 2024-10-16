@@ -235,7 +235,7 @@ export default class ReactionDropdown extends React.PureComponent {
         <Overlay show={open} offset={[5, 5]} placement={'bottom'} flip target={this.findTarget} popperConfig={{ strategy: 'fixed' }}>
           {({ props, arrowProps, placement }) => (
             <div {...props}>
-              <div className={`dropdown-animation dropdown-menu ${placement}`}>
+              <div className={`dropdown-animation ${placement}`}>
                 <div className={`dropdown-menu__arrow ${placement}`} {...arrowProps} />
                 <ReactionDropdownMenu
                   loading={loading}
