@@ -15,9 +15,9 @@ import Overlay from 'react-overlays/Overlay';
 
 import { AnimatedNumber } from 'mastodon/components/animated_number';
 import { unicodeMapping } from 'mastodon/features/emoji/emoji_unicode_mapping_light';
+import { identityContextPropShape, withIdentity } from 'mastodon/identity_context';
 import { autoPlayGif, reduceMotion } from 'mastodon/initial_state';
 import { assetHost } from 'mastodon/utils/config';
-import { identityContextPropShape, withIdentity } from 'mastodon/identity_context';
 
 import { Avatar } from './avatar';
 import { DisplayName } from './display_name';
@@ -186,6 +186,7 @@ class StatusReactionBar extends ImmutablePureComponent {
     addReaction: PropTypes.func.isRequired,
     removeReaction: PropTypes.func.isRequired,
     emojiMap: ImmutablePropTypes.map.isRequired,
+    noMargin: PropTypes.bool,
   };
 
   willEnter() {
@@ -212,7 +213,8 @@ class StatusReactionBar extends ImmutablePureComponent {
     return (
       <TransitionMotion styles={styles} willEnter={this.willEnter} willLeave={this.willLeave}>
         {items => (
-          <div className={classNames('status-reaction-bar', { 'status-reaction-bar--empty': visibleReactions.isEmpty() })}>
+          <div className={classNames('status-reaction-bar', { 'status-reaction-bar--empty': visibleReactions.isEmpty() },
+            {'status-reaction-bar-no-margin': this.props.noMargin})}>
             {items.map(({ key, data, style }) => (
               <Reaction
                 key={key}

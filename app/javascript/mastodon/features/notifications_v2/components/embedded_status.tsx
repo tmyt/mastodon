@@ -16,7 +16,15 @@ import { Icon } from 'mastodon/components/icon';
 import type { Status } from 'mastodon/models/status';
 import { useAppSelector, useAppDispatch } from 'mastodon/store';
 
+import ImportStatusReactionBar from '../../../containers/status_reaction_bar_container';
+
 import { EmbeddedStatusContent } from './embedded_status_content';
+
+// Avoid type error
+const StatusReactionBar = ImportStatusReactionBar as React.FC<{
+  status: Status;
+  noMargin?: boolean;
+}>;
 
 export type Mention = RecordOf<{ url: string; acct: string }>;
 
@@ -173,6 +181,8 @@ export const EmbeddedStatus: React.FC<{ statusId: string }> = ({
           )}
         </div>
       )}
+
+      <StatusReactionBar status={status} noMargin />
     </div>
   );
 };
