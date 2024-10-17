@@ -34,7 +34,7 @@ export type NotificationGroupFavourite =
 export type NotificationGroupReblog = BaseNotificationWithStatus<'reblog'>;
 export type NotificationGroupStatus = BaseNotificationWithStatus<'status'>;
 export type NotificationGroupMention = BaseNotificationWithStatus<'mention'>;
-export type NOtificationGroupReaction = BaseNotificationWithStatus<'reaction'>;
+export type NotificationGroupReaction = BaseNotificationWithStatus<'reaction'>;
 export type NotificationGroupPoll = BaseNotificationWithStatus<'poll'>;
 export type NotificationGroupUpdate = BaseNotificationWithStatus<'update'>;
 export type NotificationGroupFollow = BaseNotification<'follow'>;
@@ -80,7 +80,7 @@ export type NotificationGroup =
   | NotificationGroupReblog
   | NotificationGroupStatus
   | NotificationGroupMention
-  | NOtificationGroupReaction
+  | NotificationGroupReaction
   | NotificationGroupPoll
   | NotificationGroupUpdate
   | NotificationGroupFollow

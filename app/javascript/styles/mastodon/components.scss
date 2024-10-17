@@ -8881,6 +8881,15 @@ noscript {
   margin-inline-start: -2px;
   width: calc(100% - (90px - 33px));
 
+  .notification-ungrouped & {
+    margin-inline-start: 48px;
+    width: calc(100% - 48px);
+  }
+
+  &-no-margin {
+    margin-top: 0;
+  }
+
   &__wrapper {
     margin: 2px;
   }
