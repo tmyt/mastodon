@@ -83,7 +83,6 @@ jobs:
             type=ref,event=pr
       - uses: docker/build-push-action@v4
         with:
-          context: .
           file_to_build: streaming/Dockerfile
           platforms: linux/amd64
           provenance: false
