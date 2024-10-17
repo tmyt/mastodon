@@ -83,7 +83,8 @@ jobs:
             type=ref,event=pr
       - uses: docker/build-push-action@v4
         with:
-          file_to_build: streaming/Dockerfile
+          context: .
+          file: streaming/Dockerfile
           platforms: linux/amd64
           provenance: false
           builder: ${{ steps.buildx.outputs.name }}
