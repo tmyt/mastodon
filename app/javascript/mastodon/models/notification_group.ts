@@ -34,7 +34,7 @@ export type NotificationGroupFavourite =
 export type NotificationGroupReblog = BaseNotificationWithStatus<'reblog'>;
 export type NotificationGroupStatus = BaseNotificationWithStatus<'status'>;
 export type NotificationGroupMention = BaseNotificationWithStatus<'mention'>;
-export type NotificationGroupReaction = BaseNotificationWithStatus<'reaction'>;
+export type NotificationGroupReaction = BaseNotificationWithStatus<'emoji_reaction'>;
 export type NotificationGroupPoll = BaseNotificationWithStatus<'poll'>;
 export type NotificationGroupUpdate = BaseNotificationWithStatus<'update'>;
 export type NotificationGroupFollow = BaseNotification<'follow'>;
@@ -124,7 +124,7 @@ export function createNotificationGroupFromJSON(
     case 'reblog':
     case 'status':
     case 'mention':
-    case 'reaction':
+    case 'emoji_reaction':
     case 'poll':
     case 'update': {
       const { status_id: statusId, ...groupWithoutStatus } = group;
@@ -184,7 +184,7 @@ export function createNotificationGroupFromNotificationJSON(
     case 'reblog':
     case 'status':
     case 'mention':
-    case 'reaction':
+    case 'emoji_reaction':
     case 'poll':
     case 'update':
       return { ...group, statusId: notification.status?.id };

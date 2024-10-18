@@ -502,7 +502,7 @@ class Notification extends ImmutablePureComponent {
       return this.renderMention(notification);
     case 'favourite':
       return this.renderFavourite(notification, link);
-    case 'reaction':
+    case 'emoji_reaction':
       return this.renderReaction(notification, link);
     case 'reblog':
       return this.renderReblog(notification, link);
