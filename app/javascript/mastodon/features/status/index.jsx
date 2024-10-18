@@ -252,7 +252,7 @@ class Status extends ImmutablePureComponent {
 
   handleReactionClick = (status, name) => {
     const { dispatch } = this.props;
-    const { signedIn } = this.context.identity;
+    const { signedIn } = this.props.identity;
 
     if (signedIn) {
       dispatch(reaction(status, name));
