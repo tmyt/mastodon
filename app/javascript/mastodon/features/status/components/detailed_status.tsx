@@ -21,6 +21,8 @@ import { Icon } from 'mastodon/components/icon';
 import { IconLogo } from 'mastodon/components/logo';
 import PictureInPicturePlaceholder from 'mastodon/components/picture_in_picture_placeholder';
 import { VisibilityIcon } from 'mastodon/components/visibility_icon';
+import ImportedStatusReactionBar from 'mastodon/containers/status_reaction_bar_container';
+import type { Status } from 'mastodon/models/status';
 
 import { Avatar } from '../../../components/avatar';
 import { DisplayName } from '../../../components/display_name';
@@ -31,6 +33,10 @@ import scheduleIdleTask from '../../ui/util/schedule_idle_task';
 import Video from '../../video';
 
 import Card from './card';
+
+const StatusReactionBar = ImportedStatusReactionBar as React.FC<{
+  status: Status;
+}>;
 
 interface VideoModalOptions {
   startTime: number;
@@ -351,6 +357,7 @@ export const DetailedStatus: React.FC<{
             {hashtagBar}
           </>
         )}
+        <StatusReactionBar status={status} />
 
         <div className='detailed-status__meta'>
           <div className='detailed-status__meta__line'>
