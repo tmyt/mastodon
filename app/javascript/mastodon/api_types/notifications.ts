@@ -12,7 +12,7 @@ export const allNotificationTypes = [
   'follow_request',
   'favourite',
   'reblog',
-  'reaction',
+  'emoji_reaction',
   'mention',
   'poll',
   'status',
@@ -26,7 +26,7 @@ export const allNotificationTypes = [
 export type NotificationWithStatusType =
   | 'favourite'
   | 'reblog'
-  | 'reaction'
+  | 'emoji_reaction'
   | 'status'
   | 'mention'
   | 'poll'

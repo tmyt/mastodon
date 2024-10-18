@@ -182,7 +182,6 @@ class StatusReactionBar extends ImmutablePureComponent {
   static propTypes = {
     identity: identityContextPropShape,
     status: ImmutablePropTypes.map.isRequired,
-    signedIn: PropTypes.bool.isRequired,
     addReaction: PropTypes.func.isRequired,
     removeReaction: PropTypes.func.isRequired,
     emojiMap: ImmutablePropTypes.map.isRequired,

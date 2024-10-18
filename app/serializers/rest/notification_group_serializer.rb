@@ -14,6 +14,11 @@ class REST::NotificationGroupSerializer < ActiveModel::Serializer
   belongs_to :account_relationship_severance_event, key: :event, if: :relationship_severance_event?, serializer: REST::AccountRelationshipSeveranceEventSerializer
   belongs_to :account_warning, key: :moderation_warning, if: :moderation_warning_event?, serializer: REST::AccountWarningSerializer
 
+  def type
+    return :emoji_reaction if object.type == :reaction
+    object.type
+  end
+
   def sample_account_ids
     object.sample_accounts.pluck(:id).map(&:to_s)
   end

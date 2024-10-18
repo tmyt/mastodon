@@ -19,10 +19,6 @@ let id = 1000;
 
 class ReactionDropdownMenu extends React.PureComponent {
 
-  static contextTypes = {
-    router: PropTypes.object,
-  };
-
   static propTypes = {
     loading:PropTypes.bool,
     onClose: PropTypes.func.isRequired,
@@ -96,10 +92,6 @@ class ReactionDropdownMenu extends React.PureComponent {
 }
 
 export default class ReactionDropdown extends React.PureComponent {
-
-  static contextTypes = {
-    router: PropTypes.object,
-  };
 
   static propTypes = {
     children: PropTypes.node,
