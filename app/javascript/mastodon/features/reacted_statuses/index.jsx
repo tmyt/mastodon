@@ -1,17 +1,21 @@
-import { debounce } from 'lodash';
 import PropTypes from 'prop-types';
-import React from 'react';
+
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+
 import { Helmet } from 'react-helmet';
+
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
+
+import { debounce } from 'lodash';
+
+import SmileIcon from '@/material-icons/400-24px/sentiment_satisfied.svg?react';
 import { addColumn, removeColumn, moveColumn } from 'mastodon/actions/columns';
 import { fetchReactedStatuses, expandReactedStatuses } from 'mastodon/actions/reactions';
 import ColumnHeader from 'mastodon/components/column_header';
 import StatusList from 'mastodon/components/status_list';
 import Column from 'mastodon/features/ui/components/column';
-import SmileIcon from '@/material-icons/400-24px/sentiment_satisfied.svg?react';
 
 const messages = defineMessages({
   heading: { id: 'column.reactions', defaultMessage: 'Reacted posts' },

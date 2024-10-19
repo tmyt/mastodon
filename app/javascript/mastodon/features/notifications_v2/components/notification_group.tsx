@@ -94,7 +94,10 @@ export const NotificationGroup: React.FC<{
       break;
     case 'emoji_reaction':
       content = (
-        <NotificationReaction unread={unread} notification={notificationGroup} />
+        <NotificationReaction
+          unread={unread}
+          notification={notificationGroup}
+        />
       );
       break;
     case 'follow':

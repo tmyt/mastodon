@@ -67,4 +67,4 @@ const ActionBar = () => {
 const InjectIntlActionBar = injectIntl(ActionBar);
 export {
   InjectIntlActionBar as ActionBar,
-}
+};

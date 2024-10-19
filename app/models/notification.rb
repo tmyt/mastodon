@@ -33,7 +33,7 @@ class Notification < ApplicationRecord
   }.freeze
 
   # `set_group_key!` needs to be updated if this list changes
-  GROUPABLE_NOTIFICATION_TYPES = %i(favourite reblog follow).freeze
+  GROUPABLE_NOTIFICATION_TYPES = %i(favourite reblog follow reaction).freeze
   MAXIMUM_GROUP_SPAN_HOURS = 12
 
   # Please update app/javascript/api_types/notification.ts if you change this
