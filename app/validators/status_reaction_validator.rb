@@ -19,7 +19,7 @@ class StatusReactionValidator < ActiveModel::Validator
   end
 
   def new_reaction?(reaction)
-    !reaction.status.reactions.where(name: reaction.name).exists?
+    !reaction.status.reactions.exists?(name: reaction.name)
   end
 
   def limit_reached?(reaction)

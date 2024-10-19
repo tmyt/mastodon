@@ -23,7 +23,7 @@ class Api::V1::Statuses::ReactionsController < Api::BaseController
 
     reaction = Reaction.find_by_name(current_account, params[:status_id], name)
     reactions = Reaction.select('id').where(account_id: current_account.id, status_id: params[:status_id])
-  
+
     if reaction
       @status = reaction.status
       UnreactionWorker.perform_async(current_account.id, @status.id, name)
@@ -43,10 +43,10 @@ class Api::V1::Statuses::ReactionsController < Api::BaseController
     reactions = Reaction.select('id').where(account_id: current_account.id, status_id: params[:status_id])
 
     @status = Status.find(params[:status_id])
-    if reactions.size > 0
-      UnreactionAllWorker.perform_async(current_account.id, params[:status_id])
-    else
+    if reactions.empty?
       authorize @status, :show?
+    else
+      UnreactionAllWorker.perform_async(current_account.id, params[:status_id])
     end
 
     render json: @status, serializer: REST::StatusSerializer, relationships: StatusRelationshipsPresenter.new([@status], current_account.id, reactions_map: { @status.id => false })

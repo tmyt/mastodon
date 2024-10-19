@@ -19,9 +19,10 @@ class REST::NotificationSerializer < ActiveModel::Serializer
 
   def type
     return :emoji_reaction if object.type == :reaction
+
     object.type
   end
-  
+
   def group_key
     object.group_key || "ungrouped-#{object.id}"
   end
@@ -37,7 +38,7 @@ class REST::NotificationSerializer < ActiveModel::Serializer
   def emoji_reaction_type?
     object.type == :reaction
   end
-  
+
   def relationship_severance_event?
     object.type == :severed_relationships
   end

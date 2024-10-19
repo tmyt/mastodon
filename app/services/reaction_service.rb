@@ -31,14 +31,13 @@ class ReactionService < BaseService
   def create_notification(current_account, reaction)
     status = reaction.status
 
-    if status.account.local?
-      LocalNotificationWorker.perform_async(status.account_id, reaction.id, 'Reaction', 'reaction')
-    end
+    LocalNotificationWorker.perform_async(status.account_id, reaction.id, 'Reaction', 'reaction') if status.account.local?
     ActivityPub::ReactionsDistributionWorker.perform_async(build_json(reaction), current_account.id, status.account.shared_inbox_url)
   end
 
   def bump_potential_friendship(account, status)
     return if account.following?(status.account_id)
+
     ActivityTracker.increment('activity:interactions')
   end
 

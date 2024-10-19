@@ -21,7 +21,7 @@ namespace :api, format: false do
         post :unreaction, to: 'reactions#destroy'
 
         # Fedibird copatible endpoints
-        resources :emoji_reactions, only: [:update, :destroy], constraints: { id: /[^\/]+/ }, controller: 'reactions'
+        resources :emoji_reactions, only: [:update, :destroy], constraints: { id: %r{[^\/]+} }, controller: 'reactions'
         post :emoji_unreactions, to: 'reactions#destroy_all'
 
         resource :bookmark, only: :create

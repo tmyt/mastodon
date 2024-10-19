@@ -236,15 +236,15 @@ module Account::Interactions
   end
 
   def reacted?(status)
-    status.proper.reactions.where(account: self).exists?
+    status.proper.reactions.exists?(account: self)
   end
 
   def reacted_with?(status, name)
-    status.proper.reactions.where(account: self, name: name).exists?
+    status.proper.reactions.exists?(account: self, name: name)
   end
 
   def custom_emoji_reacted?(status, custom_emoji)
-    status.proper.reactions.where(account: self, custom_emoji: custom_emoji).exists?
+    status.proper.reactions.exists?(account: self, custom_emoji: custom_emoji)
   end
 
   def bookmarked?(status)
@@ -312,10 +312,6 @@ module Account::Interactions
       muting: Account.muting_map(account_ids, id),
       domain_blocking_by_domain: Account.domain_blocking_map_by_domain(domains, id),
     })
-  end
-
-  def normalized_domain(domain)
-    TagManager.instance.normalize_domain(domain)
   end
 
   def normalized_domain(domain)

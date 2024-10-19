@@ -15,7 +15,7 @@ class Rack::Attack
 
     def current_session
       return @current_session if defined?(@current_session)
-  
+
       proxy = Class.new {
         def initialize(env)
           @env = env
