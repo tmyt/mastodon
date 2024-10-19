@@ -22,23 +22,23 @@ class Rack::Attack
         end
 
         def key_generator
-          @env["action_dispatch.key_generator"]
+          @env['action_dispatch.key_generator']
         end
 
         def signed_cookie_salt
-          @env["action_dispatch.signed_cookie_salt"]
+          @env['action_dispatch.signed_cookie_salt']
         end
 
         def signed_cookie_digest
-          @env["action_dispatch.signed_cookie_digest"]
+          @env['action_dispatch.signed_cookie_digest']
         end
 
         def cookies_rotations
-          @env["action_dispatch.cookies_rotations"]
+          @env['action_dispatch.cookies_rotations']
         end
 
         def cookies_serializer
-          @env["action_dispatch.cookies_serializer"]
+          @env['action_dispatch.cookies_serializer']
         end
       }.new(@env)
       jar = ActionDispatch::Cookies::CookieJar.build(proxy, cookies.to_h)

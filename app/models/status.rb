@@ -315,9 +315,9 @@ class Status < ApplicationRecord
       if account.nil?
         scope.select('status_id, name, custom_emoji_id, count(*) as count, false as me')
       else
-        scope.select("status_id, name, custom_emoji_id, count(*) as count, "\
-                     "exists(select 1 from reactions r where r.account_id = #{account.id} and r.status_id = reactions.status_id and "\
-                     "((reactions.custom_emoji_id is not null and r.custom_emoji_id = reactions.custom_emoji_id) or (r.custom_emoji_id is null and r.name = reactions.name))) as me")
+        scope.select('status_id, name, custom_emoji_id, count(*) as count, ' \
+                     "exists(select 1 from reactions r where r.account_id = #{account.id} and r.status_id = reactions.status_id and " \
+                     '((reactions.custom_emoji_id is not null and r.custom_emoji_id = reactions.custom_emoji_id) or (r.custom_emoji_id is null and r.name = reactions.name))) as me')
       end
     end
 
