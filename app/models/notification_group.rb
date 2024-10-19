@@ -7,7 +7,7 @@ class NotificationGroup < ActiveModelSerializers::Model
   SAMPLE_ACCOUNTS_SIZE = 8
 
   def self.map_grouped_types(grouped_types)
-    grouped_types.map { |t| t == 'emoji_reaction' ? :reaction : t.to_s }
+    grouped_types.map { |t| t == 'emoji_reaction' ? :reaction : t.to_sym }
   end
 
   def self.from_notifications(notifications, pagination_range: nil, grouped_types: nil)
