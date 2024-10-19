@@ -187,7 +187,7 @@ class Notification < ApplicationRecord
         if grouped_types.present?
           # Normalize `grouped_types` so the number of different SQL query shapes remains small, and
           # the queries can be analyzed in monitoring/telemetry tools
-          grouped_types = (grouped_types.map(&:to_sym) & GROUPABLE_NOTIFICATION_TYPES).sort
+          grouped_types = (NotificationGroup.map_grouped_types(grouped_types) & GROUPABLE_NOTIFICATION_TYPES).sort
 
           sanitize_sql_array([<<~SQL.squish, { types: grouped_types }])
             COALESCE(
