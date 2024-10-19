@@ -333,7 +333,7 @@ RSpec.describe Status do
   end
 
   describe '.reactions_map' do
-    subject { Status.reactions_map([status], account) }
+    subject { described_class.reactions_map([status], account) }
 
     let(:status)  { Fabricate(:status) }
     let(:account) { Fabricate(:account) }

@@ -6,10 +6,14 @@ class NotificationGroup < ActiveModelSerializers::Model
   # Try to keep this consistent with `app/javascript/mastodon/models/notification_group.ts`
   SAMPLE_ACCOUNTS_SIZE = 8
 
+  def self.map_grouped_types(grouped_types)
+    grouped_types.map { |t| t == 'emoji_reaction' ? :reaction : t.to_s }
+  end
+
   def self.from_notifications(notifications, pagination_range: nil, grouped_types: nil)
     return [] if notifications.empty?
 
-    grouped_types = grouped_types.presence&.map(&:to_sym) || Notification::GROUPABLE_NOTIFICATION_TYPES
+    grouped_types = NotificationGroup.map_grouped_types(grouped_types.presence) || Notification::GROUPABLE_NOTIFICATION_TYPES
 
     grouped_notifications = notifications.filter { |notification| notification.group_key.present? && grouped_types.include?(notification.type) }
     group_keys = grouped_notifications.pluck(:group_key)
