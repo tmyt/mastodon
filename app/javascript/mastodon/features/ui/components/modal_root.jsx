@@ -41,8 +41,8 @@ import FocalPointModal from './focal_point_modal';
 import ImageModal from './image_modal';
 import MediaModal from './media_modal';
 import ModalLoading from './modal_loading';
-import VideoModal from './video_modal';
 import ReactionModal from './reaction_modal';
+import VideoModal from './video_modal';
 
 export const MODAL_COMPONENTS = {
   'MEDIA': () => Promise.resolve({ default: MediaModal }),

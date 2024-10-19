@@ -2,6 +2,7 @@ import escapeTextContentForBrowser from 'escape-html';
 
 import emojify from '../../features/emoji/emoji';
 import { expandSpoilers } from '../../initial_state';
+
 import { highlight } from './highlighter';
 
 const domParser = new DOMParser();

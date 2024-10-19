@@ -20,9 +20,9 @@ import AdministrationIcon from '@/material-icons/400-24px/manufacturing.svg?reac
 import MenuIcon from '@/material-icons/400-24px/menu.svg?react';
 import PersonAddIcon from '@/material-icons/400-24px/person_add.svg?react';
 import PublicIcon from '@/material-icons/400-24px/public.svg?react';
+import SmileIcon from '@/material-icons/400-24px/sentiment_satisfied.svg?react';
 import SettingsIcon from '@/material-icons/400-24px/settings-fill.svg?react';
 import StarIcon from '@/material-icons/400-24px/star.svg?react';
-import SmileIcon from '@/material-icons/400-24px/sentiment_satisfied.svg?react';
 import { fetchFollowRequests } from 'mastodon/actions/accounts';
 import Column from 'mastodon/components/column';
 import ColumnHeader from 'mastodon/components/column_header';

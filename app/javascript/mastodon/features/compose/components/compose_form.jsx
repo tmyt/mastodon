@@ -2,12 +2,12 @@ import PropTypes from 'prop-types';
 import { createRef } from 'react';
 
 import { defineMessages, injectIntl } from 'react-intl';
-import { connect } from 'react-redux';
 
 import classNames from 'classnames';
 
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+import { connect } from 'react-redux';
 
 import { length } from 'stringz';
 
