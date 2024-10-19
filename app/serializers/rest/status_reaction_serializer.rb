@@ -12,6 +12,8 @@ class REST::StatusReactionSerializer < ActiveModel::Serializer
 
   has_many :users, serializer: REST::AccountSerializer
 
+  delegate :users, to: :object
+
   def count
     object.respond_to?(:count) ? object.count : 0
   end
@@ -34,9 +36,5 @@ class REST::StatusReactionSerializer < ActiveModel::Serializer
 
   def domain
     object.custom_emoji.domain
-  end
-
-  def users
-    object.users
   end
 end

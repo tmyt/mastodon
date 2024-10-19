@@ -5,7 +5,7 @@ class UnreactionService < BaseService
 
   def call(account, status, name)
     reaction = Reaction.find_by_name(account, status.id, name)
-    throw ActiveRecord::RecordNotFound unless reaction.present?
+    throw ActiveRecord::RecordNotFound if reaction.blank?
     reaction.destroy!
     create_notification(account, reaction)
     reaction

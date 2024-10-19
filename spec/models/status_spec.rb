@@ -331,12 +331,12 @@ RSpec.describe Status do
       expect(subject[status.id]).to be true
     end
   end
-  
+
   describe '.reactions_map' do
+    subject { Status.reactions_map([status], account) }
+
     let(:status)  { Fabricate(:status) }
     let(:account) { Fabricate(:account) }
-
-    subject { Status.reactions_map([status], account) }
 
     it 'returns a hash' do
       expect(subject).to be_a Hash

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe Reaction, type: :model do
+RSpec.describe Reaction do
   let(:account) { Fabricate(:account) }
 
   context 'when status is a reblog' do
@@ -8,12 +10,12 @@ RSpec.describe Reaction, type: :model do
     let(:status) { Fabricate(:status, reblog: reblog) }
 
     it 'invalidates if the reblogged status is already a reaction' do
-      Reaction.create!(account: account, status: reblog, name: '✋')
-      expect(Reaction.new(account: account, status: status, name: '✋').valid?).to eq false
+      described_class.create!(account: account, status: reblog, name: '✋')
+      expect(described_class.new(account: account, status: status, name: '✋').valid?).to be false
     end
 
     it 'replaces status with the reblogged one if it is a reblog' do
-      reaction = Reaction.create!(account: account, status: status, name: '✋')
+      reaction = described_class.create!(account: account, status: status, name: '✋')
       expect(reaction.status).to eq reblog
     end
   end
@@ -22,7 +24,7 @@ RSpec.describe Reaction, type: :model do
     let(:status) { Fabricate(:status, reblog: nil) }
 
     it 'saves with the specified status' do
-      reaction = Reaction.create!(account: account, status: status, name: '✋')
+      reaction = described_class.create!(account: account, status: status, name: '✋')
       expect(reaction.status).to eq status
     end
   end

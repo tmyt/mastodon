@@ -133,21 +133,21 @@ class ActivityPub::Activity::Undo < ActivityPub::Activity
     status = status_from_uri(target_uri)
 
     return if status.nil? || !status.account.local?
-    
+
     if @object['tag'].present?
       as_array(@object['tag']).each do |tag|
-        if equals_or_includes?(tag['type'], 'Emoji')
-          custom_emoji_parser = ActivityPub::Parser::CustomEmojiParser.new(tag)
-          emoji = CustomEmoji.find_by(shortcode: custom_emoji_parser.shortcode, domain: custom_emoji_parser.domain)
-          if @account.custom_emoji_reacted?(status, emoji)
-            reaction = status.reactions.where(account: @account, custom_emoji: emoji).first
-            reaction&.destroy
-          end
+        next unless equals_or_includes?(tag['type'], 'Emoji')
+
+        custom_emoji_parser = ActivityPub::Parser::CustomEmojiParser.new(tag)
+        emoji = CustomEmoji.find_by(shortcode: custom_emoji_parser.shortcode, domain: custom_emoji_parser.domain)
+        if @account.custom_emoji_reacted?(status, emoji)
+          reaction = status.reactions.where(account: @account, custom_emoji: emoji).first
+          reaction&.destroy
         end
       end
     elsif @account.reacted_with?(status, @object['content'])
       reaction = status.reactions.where(account: @account, name: @object['content']).first
-      reaction&.destroy  
+      reaction&.destroy
     else
       delete_later!(object_uri)
     end

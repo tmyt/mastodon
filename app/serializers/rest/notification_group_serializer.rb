@@ -16,6 +16,7 @@ class REST::NotificationGroupSerializer < ActiveModel::Serializer
 
   def type
     return :emoji_reaction if object.type == :reaction
+
     object.type
   end
 

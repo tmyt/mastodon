@@ -3,11 +3,11 @@
 class ActivityPub::Activity::EmojiReact < ActivityPub::Activity
   def perform
     return if @json['content'].blank?
+
     original_status = status_from_uri(object_uri)
 
     return if original_status.nil? || delete_arrived_first?(@json['id'])
-    
-    
+
     process_tags
 
     reaction = original_status.reactions.create!(account: @account, name: @json['content']) if @json['tag'].nil? && !@account.reacted_with?(original_status, @json['content'])
@@ -22,10 +22,9 @@ class ActivityPub::Activity::EmojiReact < ActivityPub::Activity
 
   def process_tags
     return if @json['tag'].nil?
+
     as_array(@json['tag']).each do |tag|
-      if equals_or_includes?(tag['type'], 'Emoji')
-        process_emoji tag
-      end
+      process_emoji tag if equals_or_includes?(tag['type'], 'Emoji')
     end
   end
 

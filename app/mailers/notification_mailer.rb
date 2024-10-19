@@ -41,6 +41,14 @@ class NotificationMailer < ApplicationMailer
     end
   end
 
+  def reaction
+    return if @status.blank?
+
+    locale_for_account(@me) do
+      mail subject: default_i18n_subject(name: @account.acct)
+    end
+  end
+
   def reblog
     return if @status.blank?
 

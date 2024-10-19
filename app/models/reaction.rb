@@ -23,8 +23,8 @@ class Reaction < ApplicationRecord
 
   has_one :notification, as: :activity, dependent: :destroy
 
-  validates :status_id, uniqueness: { 
-    scope: [:account_id, :name, :custom_emoji_id]
+  validates :status_id, uniqueness: {
+    scope: [:account_id, :name, :custom_emoji_id],
   }
 
   belongs_to :custom_emoji, optional: true
@@ -50,11 +50,11 @@ class Reaction < ApplicationRecord
     shortcode = name.split('@')[0] if name.include?('@')
     domain = name.split('@')[1] if name.include?('@')
 
-    customEmoji = CustomEmoji.find_by(shortcode: shortcode, domain: domain) if domain.present?
-    customEmoji = CustomEmoji.local.find_by(shortcode: shortcode) unless domain.present?
+    custom_emoji = CustomEmoji.find_by(shortcode: shortcode, domain: domain) if domain.present?
+    custom_emoji = CustomEmoji.local.find_by(shortcode: shortcode) if domain.blank?
 
-    reaction = account.reactions.find_by(status_id: status_id, custom_emoji_id: customEmoji.id) if customEmoji.present?
-    reaction = account.reactions.find_by(status_id: status_id, name: shortcode) unless customEmoji.present?
+    reaction = account.reactions.find_by(status_id: status_id, custom_emoji_id: custom_emoji.id) if custom_emoji.present?
+    reaction = account.reactions.find_by(status_id: status_id, name: shortcode) if custom_emoji.blank?
 
     reaction
   end
@@ -63,6 +63,7 @@ class Reaction < ApplicationRecord
 
   def set_custom_emoji
     return if custom_emoji.present?
+
     self.custom_emoji = if domain_present?
                           CustomEmoji.find_by(disabled: false, shortcode: shortcode, domain: domain)
                         else
@@ -76,6 +77,7 @@ class Reaction < ApplicationRecord
 
   def decrement_cache_counters
     return if association(:status).loaded? && status.marked_for_destruction?
+
     status&.decrement_count!(:reactions_count)
   end
 

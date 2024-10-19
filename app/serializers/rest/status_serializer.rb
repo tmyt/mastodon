@@ -118,11 +118,11 @@ class REST::StatusSerializer < ActiveModel::Serializer
   end
 
   def emoji_reactioned
-    self.reacted
+    reacted
   end
 
   def emoji_reactions
-    self.reactions
+    reactions
   end
 
   def reblogged

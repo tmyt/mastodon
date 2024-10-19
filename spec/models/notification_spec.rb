@@ -7,7 +7,6 @@ RSpec.describe Notification do
     let(:notification) { Fabricate(:notification, activity: activity) }
     let(:status)       { Fabricate(:status) }
     let(:reblog)       { Fabricate(:status, reblog: status) }
-    let(:reaction)     { Fabricate(:reaction, status: status) }
     let(:favourite)    { Fabricate(:favourite, status: status) }
     let(:reaction)     { Fabricate(:reaction, status: status, name: '✋') }
     let(:mention)      { Fabricate(:mention, status: status) }
@@ -29,7 +28,7 @@ RSpec.describe Notification do
       end
     end
 
-    context 'activity is reaction' do
+    context 'when Activity is reaction' do
       let(:type)     { :reaction }
       let(:activity) { reaction }
 
@@ -64,7 +63,7 @@ RSpec.describe Notification do
     end
 
     it 'returns :reaction for a Reaction' do
-      notification = Notification.new(activity: Reaction.new)
+      notification = described_class.new(activity: Reaction.new)
       expect(notification.type).to eq :reaction
     end
 
@@ -307,7 +306,7 @@ RSpec.describe Notification do
             target_status: eq(reblog.reblog).and(have_loaded_association(:account))
           ).and(have_loaded_association(:status))
         end
-        
+
         def reaction_attributes
           have_attributes(
             type: :reaction,

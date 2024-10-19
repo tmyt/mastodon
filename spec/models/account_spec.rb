@@ -334,11 +334,11 @@ RSpec.describe Account do
       it 'is true when this account has reacted it' do
         Fabricate(:reaction, status: original_reblog, account: subject, name: '✋')
 
-        expect(subject.reacted?(original_status)).to eq true
+        expect(subject.reacted?(original_status)).to be true
       end
 
       it 'is false when this account has not reacted it' do
-        expect(subject.reacted?(original_status)).to eq false
+        expect(subject.reacted?(original_status)).to be false
       end
     end
 
@@ -346,11 +346,11 @@ RSpec.describe Account do
       it 'is true when this account has reacted it' do
         Fabricate(:reaction, status: original_status, account: subject, name: '✋')
 
-        expect(subject.reacted?(original_status)).to eq true
+        expect(subject.reacted?(original_status)).to be true
       end
 
       it 'is false when this account has not reacted it' do
-        expect(subject.reacted?(original_status)).to eq false
+        expect(subject.reacted?(original_status)).to be false
       end
     end
   end
