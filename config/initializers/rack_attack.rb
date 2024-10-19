@@ -13,38 +13,6 @@ class Rack::Attack
       )
     end
 
-    def current_session
-      return @current_session if defined?(@current_session)
-
-      proxy = Class.new {
-        def initialize(env)
-          @env = env
-        end
-
-        def key_generator
-          @env['action_dispatch.key_generator']
-        end
-
-        def signed_cookie_salt
-          @env['action_dispatch.signed_cookie_salt']
-        end
-
-        def signed_cookie_digest
-          @env['action_dispatch.signed_cookie_digest']
-        end
-
-        def cookies_rotations
-          @env['action_dispatch.cookies_rotations']
-        end
-
-        def cookies_serializer
-          @env['action_dispatch.cookies_serializer']
-        end
-      }.new(@env)
-      jar = ActionDispatch::Cookies::CookieJar.build(proxy, cookies.to_h)
-      @current_session = SessionActivation.find_by(session_id: jar.signed['_session_id']) if jar.signed['_session_id'].present?
-    end
-
     def remote_ip
       @remote_ip ||= (@env['action_dispatch.remote_ip'] || ip).to_s
     end
@@ -68,15 +36,6 @@ class Rack::Attack
     def authenticated_token_id
       authenticated_token&.id
     end
-
-    # TODO: ちょっとよくわからん
-    # def current_session_user_id
-    #   current_session&.user_id
-    # end
-
-    # def nosession?
-    #   !current_session_user_id
-    # end
 
     def warden_user_id
       @env['warden']&.user&.id
