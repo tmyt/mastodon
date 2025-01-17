@@ -28,6 +28,9 @@ class ActivityPub::Activity
     private
 
     def klass
+      # Support litepub:EmojiReact
+      @json['type'] = 'EmojiReact' if @json['type'].eql?('http://litepub.social/ns#EmojiReact')
+      # Support misskey style emoji react
       @json['type'] = 'EmojiReact' if @json['type'].eql?('Like') && @json['content'].present?
 
       case @json['type']
