@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_27_132728) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_10_162443) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -949,11 +949,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_27_132728) do
     t.bigint "status_id"
     t.string "name", default: "", null: false
     t.bigint "custom_emoji_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["account_id", "status_id", "name"], name: "index_reactions_on_account_id_and_status_id", unique: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["account_id"], name: "index_reactions_on_account_id"
     t.index ["custom_emoji_id"], name: "index_reactions_on_custom_emoji_id"
+    t.index ["status_id", "account_id", "name", "custom_emoji_id"], name: "index_reactions_on_status_account_name_and_custom_emoji_id", unique: true
     t.index ["status_id"], name: "index_reactions_on_status_id"
   end
 
