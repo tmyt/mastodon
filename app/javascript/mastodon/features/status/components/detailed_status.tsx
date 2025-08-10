@@ -11,6 +11,7 @@ import { FormattedMessage } from 'react-intl';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 
+import type { Status } from '@/mastodon/models/status';
 import AlternateEmailIcon from '@/material-icons/400-24px/alternate_email.svg?react';
 import { AnimatedNumber } from 'mastodon/components/animated_number';
 import { Avatar } from 'mastodon/components/avatar';
@@ -31,8 +32,8 @@ import { VisibilityIcon } from 'mastodon/components/visibility_icon';
 import { Audio } from 'mastodon/features/audio';
 import scheduleIdleTask from 'mastodon/features/ui/util/schedule_idle_task';
 import { Video } from 'mastodon/features/video';
+
 import ImportedStatusReactionBar from '../../../containers/status_reaction_bar_container';
-import { Status } from '@/mastodon/models/status';
 
 import Card from './card';
 
