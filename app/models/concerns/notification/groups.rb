@@ -50,7 +50,7 @@ module Notification::Groups
           # the queries can be analyzed in monitoring/telemetry tools
           grouped_types = grouped_types.map { |t| t == 'emoji_reaction' ? 'reaction' : t }
           grouped_types = (grouped_types.map(&:to_sym) & GROUPABLE_NOTIFICATION_TYPES).sort
-          
+
           # Include both 'reaction' and 'emoji_reaction' when 'reaction' is requested
           types_to_check = grouped_types.flat_map { |type| type == :reaction ? [:reaction, :emoji_reaction] : type }.uniq
 
