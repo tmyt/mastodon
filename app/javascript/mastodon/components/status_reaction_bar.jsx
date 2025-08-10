@@ -8,9 +8,7 @@ import classNames from 'classnames';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 
-
-import TransitionMotion from 'react-motion/lib/TransitionMotion';
-import spring from 'react-motion/lib/spring';
+import { useTransition, animated } from '@react-spring/web';
 import Overlay from 'react-overlays/Overlay';
 
 import { AnimatedNumber } from 'mastodon/components/animated_number';
@@ -174,64 +172,48 @@ class Reaction extends ImmutablePureComponent {
       </>
     );
   }
-
 }
 
-class StatusReactionBar extends ImmutablePureComponent {
+const StatusReactionBar = ({identity, status, addReaction, removeReaction, emojiMap, noMargin}) => {
+  const { signedIn } = identity || {};
 
-  static propTypes = {
-    identity: identityContextPropShape,
-    status: ImmutablePropTypes.map.isRequired,
-    addReaction: PropTypes.func.isRequired,
-    removeReaction: PropTypes.func.isRequired,
-    emojiMap: ImmutablePropTypes.map.isRequired,
-    noMargin: PropTypes.bool,
-  };
+  const reactions = status.get('reactions');
+  const visibleReactions = reactions.filter(x => x.get('count') > 0);
 
-  willEnter() {
-    return { scale: reduceMotion ? 1 : 0 };
-  }
+  const items = visibleReactions.map(reaction => ({
+    key: reaction.get('name') + '@' + reaction.get('domain'),
+    data: reaction,
+  })).toArray();
 
-  willLeave() {
-    return { scale: reduceMotion ? 0 : spring(0, { stiffness: 170, damping: 26 }) };
-  }
+  const transitions = useTransition(items, {
+    keys: item => item.key,
+    from: { scale: reduceMotion ? 1 : 0 },
+    enter: { scale: 1 },
+    leave: { scale: 0 },
+    config: reduceMotion ? { duration: 0 } : { tension: 150, friction: 13 }
+  });
 
-  render() {
-    const status = this.props.status;
-    const { signedIn } = this.props.identity || {};
-
-    const reactions = status.get('reactions');
-    const visibleReactions = reactions.filter(x => x.get('count') > 0);
-
-    const styles = visibleReactions.map(reaction => ({
-      key: reaction.get('name') + '@' + reaction.get('domain'),
-      data: reaction,
-      style: { scale: reduceMotion ? 1 : spring(1, { stiffness: 150, damping: 13 }) },
-    })).toArray();
-
-    return (
-      <TransitionMotion styles={styles} willEnter={this.willEnter} willLeave={this.willLeave}>
-        {items => (
-          <div className={classNames('status-reaction-bar', { 'status-reaction-bar--empty': visibleReactions.isEmpty() },
-            {'status-reaction-bar-no-margin': this.props.noMargin})}>
-            {items.map(({ key, data, style }) => (
-              <Reaction
-                key={key}
-                reaction={data}
-                style={{ transform: `scale(${style.scale})`, position: style.scale < 0.5 ? 'absolute' : 'static' }}
-                status={status}
-                signedIn={signedIn}
-                addReaction={this.props.addReaction}
-                removeReaction={this.props.removeReaction}
-                emojiMap={this.props.emojiMap}
-              />
-            ))}
-          </div>
-        )}
-      </TransitionMotion>
-    );
-  }
-
-}
+  return (
+    <div className={classNames('status-reaction-bar', 
+      { 'status-reaction-bar--empty': visibleReactions.isEmpty() },
+      { 'status-reaction-bar-no-margin': noMargin })}>
+      {transitions((style, item) => (
+        <Reaction
+          key={item.key}
+          reaction={item.data}
+          style={{ 
+            transform: style.scale.to(s => `scale(${s})`),
+            position: style.scale.to(s => s < 0.5 ? 'absolute' : 'static')
+          }}
+          status={status}
+          signedIn={signedIn}
+          addReaction={addReaction}
+          removeReaction={removeReaction}
+          emojiMap={emojiMap}
+        />
+      ))}
+    </div>
+  );
+};
 
 export default withIdentity(injectIntl(StatusReactionBar));
