@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe PreviewCard do
   describe 'file size limit', :attachment_processing do
     it 'is set differently whether vips is enabled or not' do
-      expect(described_class::LIMIT).to eq(Rails.configuration.x.use_vips ? 8.megabytes : 2.megabytes)
+      expect(described_class::LIMIT).to eq(Rails.configuration.x.use_vips ? 12.megabytes : 5.megabytes)
     end
   end
 
