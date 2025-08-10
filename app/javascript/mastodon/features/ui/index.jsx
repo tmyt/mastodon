@@ -55,6 +55,8 @@ import {
   NotificationRequest,
   FollowRequests,
   FavouritedStatuses,
+  ReactedStatuses,
+  Reactions,
   BookmarkedStatuses,
   FollowedTags,
   LinkTimeline,

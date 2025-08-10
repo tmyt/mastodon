@@ -4,7 +4,7 @@ module Notification::Groups
   extend ActiveSupport::Concern
 
   # `set_group_key!` needs to be updated if this list changes
-  GROUPABLE_NOTIFICATION_TYPES = %i(favourite reblog follow admin.sign_up).freeze
+  GROUPABLE_NOTIFICATION_TYPES = %i(favourite reblog follow reaction admin.sign_up).freeze
   MAXIMUM_GROUP_SPAN_HOURS = 12
 
   included do
@@ -15,7 +15,7 @@ module Notification::Groups
     return if filtered? || GROUPABLE_NOTIFICATION_TYPES.exclude?(type)
 
     type_prefix = case type
-                  when :favourite, :reblog
+                  when :favourite, :reblog, :reaction
                     [type, target_status&.id].join('-')
                   when :follow, :'admin.sign_up'
                     type
@@ -48,9 +48,13 @@ module Notification::Groups
         if grouped_types.present?
           # Normalize `grouped_types` so the number of different SQL query shapes remains small, and
           # the queries can be analyzed in monitoring/telemetry tools
+          grouped_types = grouped_types.map { |t| t == 'emoji_reaction' ? 'reaction' : t }
           grouped_types = (grouped_types.map(&:to_sym) & GROUPABLE_NOTIFICATION_TYPES).sort
+          
+          # Include both 'reaction' and 'emoji_reaction' when 'reaction' is requested
+          types_to_check = grouped_types.flat_map { |type| type == :reaction ? [:reaction, :emoji_reaction] : type }.uniq
 
-          sanitize_sql_array([<<~SQL.squish, { types: grouped_types }])
+          sanitize_sql_array([<<~SQL.squish, { types: types_to_check }])
             COALESCE(
               CASE
                 WHEN notifications.type IN (:types) THEN notifications.group_key

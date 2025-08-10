@@ -21,7 +21,7 @@ export const makeGetStatus = () => {
       (_, { contextType }) => ['detailed', 'bookmarks', 'favourites'].includes(contextType),
     ],
 
-    (statusBase, statusReblog, accountBase, accountReblog, filters, warnInsteadOfHide) => {
+    (statusBase, statusReblog, accountBase, accountReblog, filters, reactedUsers, reactedUsersReblog, warnInsteadOfHide) => {
       if (!statusBase || statusBase.get('isLoading')) {
         return null;
       }

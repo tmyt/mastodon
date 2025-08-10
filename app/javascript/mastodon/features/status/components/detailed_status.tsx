@@ -31,6 +31,8 @@ import { VisibilityIcon } from 'mastodon/components/visibility_icon';
 import { Audio } from 'mastodon/features/audio';
 import scheduleIdleTask from 'mastodon/features/ui/util/schedule_idle_task';
 import { Video } from 'mastodon/features/video';
+import ImportedStatusReactionBar from '../../../containers/status_reaction_bar_container';
+import { Status } from '@/mastodon/models/status';
 
 import Card from './card';
 

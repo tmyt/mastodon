@@ -601,6 +601,8 @@ class Status extends ImmutablePureComponent {
               </>
             )}
 
+            <StatusReactionBar status={status} account={account} scrollKey={scrollKey} />
+
             {!isQuotedPost &&
               <StatusActionBar scrollKey={scrollKey} status={status} account={account}  {...other} />
             }

@@ -13,6 +13,8 @@ import { length } from 'stringz';
 
 import { missingAltTextModal } from 'mastodon/initial_state';
 
+import POWERMODE from 'activate-power-mode';
+
 import AutosuggestInput from 'mastodon/components/autosuggest_input';
 import AutosuggestTextarea from 'mastodon/components/autosuggest_textarea';
 import { Button } from 'mastodon/components/button';
@@ -169,7 +171,6 @@ class ComposeForm extends ImmutablePureComponent {
 
   componentDidMount () {
     if (this.props.enablePowerMode) {
-      const POWERMODE = require('activate-power-mode');
       POWERMODE.colorful = !!this.props.colorfulPowerMode;
       this.textareaRef.current.addEventListener('input', POWERMODE);
     }
