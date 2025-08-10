@@ -2653,6 +2653,7 @@ __metadata:
     "@vitest/browser": "npm:^3.2.1"
     "@vitest/coverage-v8": "npm:^3.2.0"
     "@vitest/ui": "npm:^3.2.1"
+    activate-power-mode: "https://github.com/tmyt/activate-power-mode.git#feature/common-js"
     arrow-key-navigation: "npm:^1.2.0"
     async-mutex: "npm:^0.5.0"
     axios: "npm:^1.4.0"
@@ -2680,6 +2681,7 @@ __metadata:
     eslint-plugin-storybook: "npm:^9.0.4"
     fuzzysort: "npm:^3.0.0"
     globals: "npm:^16.0.0"
+    highlight.js: "npm:^11.7.0"
     history: "npm:^4.10.1"
     hoist-non-react-statics: "npm:^3.3.2"
     http-link-header: "npm:^1.1.1"
@@ -4982,6 +4984,15 @@ __metadata:
   bin:
     acorn: bin/acorn
   checksum: 10c0/dbd36c1ed1d2fa3550140000371fcf721578095b18777b85a79df231ca093b08edc6858d75d6e48c73e431c174dcf9214edbd7e6fa5911b93bd8abfa54e47123
+  languageName: node
+  linkType: hard
+
+"activate-power-mode@https://github.com/tmyt/activate-power-mode.git#feature/common-js":
+  version: 1.0.0
+  resolution: "activate-power-mode@https://github.com/tmyt/activate-power-mode.git#commit=0d406cc4dc4b4ce3eea81c7bec6dc9c1cdbcf68f"
+  dependencies:
+    textarea-caret: "npm:^3.0.2"
+  checksum: 10c0/e5acdaddd0464d4767f12fe722c2d0a87281b9223bca1e0f7885d9d1a71d6fed91d2527fbd00a76e6e436e00716ca763a4b29f961be66225c2283be876a89af6
   languageName: node
   linkType: hard
 
@@ -7956,6 +7967,13 @@ __metadata:
   version: 5.0.0
   resolution: "help-me@npm:5.0.0"
   checksum: 10c0/054c0e2e9ae2231c85ab5e04f75109b9d068ffcc54e58fb22079822a5ace8ff3d02c66fd45379c902ad5ab825e5d2e1451fcc2f7eab1eb49e7d488133ba4cacb
+  languageName: node
+  linkType: hard
+
+"highlight.js@npm:^11.7.0":
+  version: 11.11.1
+  resolution: "highlight.js@npm:11.11.1"
+  checksum: 10c0/40f53ac19dac079891fcefd5bd8a21cf2e8931fd47da5bd1dca73b7e4375c1defed0636fc39120c639b9c44119b7d110f7f0c15aa899557a5a1c8910f3c0144c
   languageName: node
   linkType: hard
 
@@ -12986,6 +13004,13 @@ __metadata:
     glob: "npm:^10.4.1"
     minimatch: "npm:^9.0.4"
   checksum: 10c0/6d67b9af4336a2e12b26a68c83308c7863534c65f27ed4ff7068a56f5a58f7ac703e8fc80f698a19bb154fd8f705cdf7ec347d9512b2c522c737269507e7b263
+  languageName: node
+  linkType: hard
+
+"textarea-caret@npm:^3.0.2":
+  version: 3.1.0
+  resolution: "textarea-caret@npm:3.1.0"
+  checksum: 10c0/ae6a9d31eb337d0e5925642718484a56664cd94d88adeb7e68498a0149a0d3359bba8a21790f286f95843407ba9622dad10c092a429165587427270792071709
   languageName: node
   linkType: hard
 

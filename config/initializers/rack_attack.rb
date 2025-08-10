@@ -70,7 +70,7 @@ class Rack::Attack
     req.authenticated_user_id if req.api_request?
   end
 
-  throttle('throttle_per_token_api', limit: 300, period: 5.minutes) do |req|
+  throttle('throttle_per_token_api', limit: 600, period: 5.minutes) do |req|
     req.authenticated_token_id if req.api_request?
   end
 
@@ -82,11 +82,11 @@ class Rack::Attack
     req.authenticated_user_id if req.post? && req.path.match?(%r{\A/api/v\d+/media\z}i)
   end
 
-  throttle('throttle_media_proxy', limit: 150, period: 5.minutes) do |req|
+  throttle('throttle_authenticated_media_proxy', limit: 150, period: 5.minutes) do |req|
     req.authenticated_user_id if req.path.start_with?('/media_proxy')
   end
 
-  throttle('throttle_unauthenticated_media_proxy', limit: 30, period: 10.minutes) do |req|
+  throttle('throttle_media_proxy', limit: 30, period: 10.minutes) do |req|
     req.throttleable_remote_ip if req.path.start_with?('/media_proxy') && req.unauthenticated?
   end
 

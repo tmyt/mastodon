@@ -6,6 +6,7 @@ import { useHistory } from 'react-router-dom';
 
 import type { List as ImmutableList, RecordOf } from 'immutable';
 
+import type { Status } from '@/mastodon/models/status';
 import BarChart4BarsIcon from '@/material-icons/400-24px/bar_chart_4_bars.svg?react';
 import PhotoLibraryIcon from '@/material-icons/400-24px/photo_library.svg?react';
 import { toggleStatusSpoilers } from 'mastodon/actions/statuses';
