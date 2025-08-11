@@ -76,10 +76,6 @@ class ActivityPub::Parser::StatusParser
     @object['inReplyTo'].present?
   end
 
-  def quote
-    @object['quoteUrl'].present?
-  end
-
   def sensitive
     @object['sensitive']
   end

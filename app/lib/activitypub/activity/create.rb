@@ -409,7 +409,7 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
   end
 
   def in_reply_to_uri
-    value_or_id(@object['inReplyTo']) || value_or_id(@object['quoteUrl'])
+    value_or_id(@object['inReplyTo'])
   end
 
   def converted_text
