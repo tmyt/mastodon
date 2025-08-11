@@ -8898,8 +8898,20 @@ noscript {
   }
 }
 
+.reactions-bar .reactions-bar__item {
+  margin-inline: 2px;
+}
+
+.reactions-bar.reactions-bar--empty {
+  display: none;
+}
+
 .status-reaction-bar {
   width: 100%;
+}
+
+.status-reaction-bar.status-reaction-bar--empty {
+  display: none;
 }
 
 .detailed-status-reaction-bar {

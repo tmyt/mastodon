@@ -561,6 +561,7 @@
   "navigation_bar.direct": "Private mentions",
   "navigation_bar.domain_blocks": "Blocked domains",
   "navigation_bar.favourites": "Favorites",
+  "navigation_bar.reactions": "Reactions",
   "navigation_bar.filters": "Muted words",
   "navigation_bar.follow_requests": "Follow requests",
   "navigation_bar.followed_tags": "Followed hashtags",
