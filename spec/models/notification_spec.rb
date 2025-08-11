@@ -311,7 +311,7 @@ RSpec.describe Notification do
           have_attributes(
             type: :reaction,
             status: have_loaded_association(:reaction),
-            target_status: eq(reaction.reaction).and(have_loaded_association(:account))
+            target_status: eq(reaction.status).and(have_loaded_association(:account))
           ).and(have_loaded_association(:status))
         end
 
