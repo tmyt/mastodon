@@ -13,7 +13,13 @@ class ActivityPub::VerifyQuoteService < BaseService
     @fetching_error = nil
 
     fetch_quoted_post_if_needed!(fetchable_quoted_uri, prefetched_body: prefetched_quoted_object)
-    return if fast_track_approval! || quote.approval_uri.blank?
+    return if fast_track_approval!
+
+    if quote.approval_uri.blank?
+      # Legacy quotes should be auto-accepted if we successfully found the quoted status
+      quote.accept! if quote.legacy? && quote.quoted_status_id.present?
+      return
+    end
 
     @json = fetch_approval_object(quote.approval_uri, prefetched_body: prefetched_approval)
     return quote.reject! if @json.nil?
