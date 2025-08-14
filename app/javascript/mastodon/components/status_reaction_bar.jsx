@@ -152,7 +152,7 @@ class Reaction extends ImmutablePureComponent {
                     <span className='status-reaction-bar__item__users__emoji__code'>{title}</span>
                   </div>
                   <div>
-                    {reaction.get('users').map(user => (
+                    {reaction.get('users').filter(user => user).map(user => (
                       <span className='status-reaction-bar__item__users__item' key={user.get('acct')}>
                         <Avatar account={user} size={24} />
                         <DisplayName account={user} />
