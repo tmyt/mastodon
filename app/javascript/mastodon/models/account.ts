@@ -124,6 +124,7 @@ export function createAccountFromServerJSON(serverJSON: ApiAccountJSON) {
   return AccountFactory({
     ...accountJSON,
     moved: moved?.id,
+    display_name: displayName,
     fields: ImmutableList(
       serverJSON.fields.map((field) => createAccountField(field)),
     ),

@@ -24,9 +24,9 @@ function getStatusResultFunction(
   statusReblog,
   accountBase,
   accountReblog,
-  filters,
   reactedUsers,
   reactedUsersReblog,
+  filters,
   warnInsteadOfHide
 ) {
   if (!statusBase) {
@@ -53,6 +53,25 @@ function getStatusResultFunction(
     statusReblog = null;
   }
 
+  let reactions = statusReblog
+    ? statusReblog.get('reactions')
+    : statusBase.get('reactions');
+  let users = statusReblog
+    ? reactedUsersReblog
+    : reactedUsers;
+  if (reactions && users) {
+    let userIndex = 0;
+    for (let i = 0; i < reactions.size; i++) {
+      for (let j = 0; j < reactions.getIn([i, 'users']).size; j++) {
+        reactions = reactions.setIn([i, 'users', j], users.get(userIndex++));
+      }
+    }
+  }
+
+  if (statusReblog) {
+    statusReblog = statusReblog.set('reactions', reactions);
+  }
+
   let filtered = false;
   let mediaFiltered = false;
   if ((accountReblog || accountBase).get('id') !== me && filters) {
@@ -73,25 +92,6 @@ function getStatusResultFunction(
     if (!filterResults.isEmpty()) {
       filtered = filterResults.map(result => filters.getIn([result.get('filter'), 'title']));
     }
-
-    let reactions = statusReblog
-      ? statusReblog.get('reactions')
-      : statusBase.get('reactions');
-    let users = statusReblog
-      ? reactedUsersReblog
-      : reactedUsers;
-    if (reactions && users) {
-      let userIndex = 0;
-      for (let i = 0; i < reactions.size; i++) {
-        for(let j = 0; j < reactions.getIn([i, 'users']).size; j++) {
-          reactions = reactions.setIn([i, 'users', j], users.get(userIndex++));
-        }
-      }
-    }
-  
-    if (statusReblog) {
-      statusReblog = statusReblog.set('reactions', reactions);
-    }
   }
 
   return {
@@ -100,6 +100,9 @@ function getStatusResultFunction(
       map.set('account', accountBase);
       map.set('matched_filters', filtered);
       map.set('matched_media_filters', mediaFiltered);
+      if (!statusReblog) {
+        map.set('reactions', reactions);
+      }
     }),
     loadingState: statusBase.get('isLoading') ? 'loading' : 'complete'
   };
@@ -109,7 +112,7 @@ export const makeGetStatus = () => {
   return createSelector(
     getStatusInputSelectors,
     (...args) => {
-      const {status} = getStatusResultFunction(...args);
+      const { status } = getStatusResultFunction(...args);
       return status
     },
   );
@@ -138,7 +141,7 @@ export const makeGetPictureInPicture = () => {
 };
 
 export const makeGetNotification = () => createSelector([
-  (_, base)             => base,
+  (_, base) => base,
   (state, _, accountId) => state.getIn(['accounts', accountId]),
 ], (base, account) => base.set('account', account));
 

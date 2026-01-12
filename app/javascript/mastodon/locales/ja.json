@@ -863,6 +863,7 @@
   "status.admin_domain": "{domain}のモデレーション画面を開く",
   "status.admin_status": "この投稿をモデレーション画面で開く",
   "status.block": "@{name}さんをブロック",
+  "status.reaction": "リアクション",
   "status.bookmark": "ブックマーク",
   "status.cancel_reblog_private": "ブースト解除",
   "status.cannot_quote": "この投稿は引用できません",
