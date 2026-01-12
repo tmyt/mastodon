@@ -73,6 +73,20 @@ function dispatchAssociatedRecords(
 
     if ('status' in notification && notification.status) {
       fetchedStatuses.push(notification.status);
+
+      // Extract accounts from status.reactions[].users[]
+      const reactions = notification.status.reactions;
+      if (reactions) {
+        reactions.forEach((reaction) => {
+          if (reaction.users) {
+            reaction.users.forEach((user) => {
+              if (!fetchedAccounts.find((account) => account.id === user.id)) {
+                fetchedAccounts.push(user);
+              }
+            });
+          }
+        });
+      }
     }
   });
 

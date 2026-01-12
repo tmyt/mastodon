@@ -82,6 +82,17 @@ export interface ApiFilterResultJSON {
   status_matches: string[];
 }
 
+export interface ApiStatusReactionJSON {
+  name: string;
+  count: number;
+  custom_emoji_id?: string;
+  me?: boolean;
+  url?: string;
+  static_url?: string;
+  domain?: string;
+  users?: ApiAccountJSON[];
+}
+
 export interface ApiStatusJSON {
   id: string;
   created_at: string;
@@ -97,10 +108,12 @@ export interface ApiStatusJSON {
   reblogs_count: number;
   favorites_count: number;
   quotes_count: number;
+  reactions_count: number;
   edited_at?: string;
 
   favorited?: boolean;
   reblogged?: boolean;
+  reacted?: boolean;
   muted?: boolean;
   bookmarked?: boolean;
   pinned?: boolean;
@@ -117,6 +130,8 @@ export interface ApiStatusJSON {
 
   tags: ApiTagJSON[];
   emojis: ApiCustomEmojiJSON[];
+  reactions?: ApiStatusReactionJSON[];
+  emoji_reactions?: ApiStatusReactionJSON[];
 
   card?: ApiPreviewCardJSON;
   poll?: ApiPollJSON;

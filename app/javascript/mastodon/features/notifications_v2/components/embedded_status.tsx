@@ -37,7 +37,31 @@ export const EmbeddedStatus: React.FC<{ statusId: string }> = ({
   const clickCoordinatesRef = useRef<[number, number] | null>();
   const dispatch = useAppDispatch();
 
-  const status = useAppSelector((state) => state.statuses.get(statusId));
+  const status = useAppSelector((state) => {
+    const currentStatus = state.statuses.get(statusId);
+    if (!currentStatus) return currentStatus;
+    // Remap reactions
+    let reactions = currentStatus.get('reactions') as
+      | ImmutableList<Immutable.Collection<string, unknown>>
+      | undefined;
+    if (!reactions) return currentStatus;
+
+    for (let i = 0; i < reactions.size; i++) {
+      for (
+        let j = 0;
+        j < (reactions.getIn([i, 'users']) as ImmutableList<unknown>).size;
+        j++
+      ) {
+        const userId = reactions.getIn([i, 'users', j, 'id']) as string;
+        reactions = reactions.setIn(
+          [i, 'users', j],
+          state.accounts.get(userId),
+        );
+      }
+    }
+
+    return currentStatus.set('reactions', reactions);
+  });
 
   const account = useAppSelector((state) =>
     state.accounts.get(status?.get('account') as string),
