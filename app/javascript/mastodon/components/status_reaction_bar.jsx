@@ -8,12 +8,12 @@ import classNames from 'classnames';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 
-import { useTransition, animated } from '@react-spring/web';
+import { useTransition } from '@react-spring/web';
 import Overlay from 'react-overlays/Overlay';
 
 import { AnimatedNumber } from 'mastodon/components/animated_number';
 import { unicodeMapping } from 'mastodon/features/emoji/emoji_unicode_mapping_light';
-import { identityContextPropShape, withIdentity } from 'mastodon/identity_context';
+import { withIdentity } from 'mastodon/identity_context';
 import { autoPlayGif, reduceMotion } from 'mastodon/initial_state';
 import { assetHost } from 'mastodon/utils/config';
 
@@ -154,7 +154,7 @@ class Reaction extends ImmutablePureComponent {
                   <div>
                     {reaction.get('users').filter(user => user).map(user => (
                       <span className='status-reaction-bar__item__users__item' key={user.get('acct')}>
-                        <Avatar account={user} size={24} />
+                        <Avatar account={user.toJS()} size={24} />
                         <DisplayName account={user} />
                       </span>
                     ))}
