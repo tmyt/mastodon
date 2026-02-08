@@ -5,6 +5,7 @@ import { expandSpoilers } from '../../initial_state';
 import { highlight } from './highlighter';
 
 const domParser = new DOMParser();
+const intlSegmenter = new Intl.Segmenter('default', { granularity: 'grapheme' });
 
 export function searchTextFromRawStatus (status) {
   const spoilerText   = status.spoiler_text || '';
@@ -126,6 +127,13 @@ export function normalizeStatus(status, normalOldStatus, { bogusQuotePolicy = fa
       });
     }
   }
+
+  // Process JumboEmoji
+  const strippedContent = (domParser.parseFromString(normalStatus.content, 'text/html').documentElement.textContent ?? '').trim();
+  const emojiCount = normalStatus.emojis.length;
+  const graphemeCount = [...intlSegmenter.segment(strippedContent)].length;
+  console.log(strippedContent);
+  normalStatus.hasJumboEmoji = (emojiCount === 1 && strippedContent.match(/^:.*?:$/)) || (graphemeCount === 1 && strippedContent.match(/\p{Emoji}/u));
 
   return normalStatus;
 }
