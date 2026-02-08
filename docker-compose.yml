@@ -142,7 +142,7 @@ services:
       - MALLOC_ARENA_MAX=2
       - LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2
       - DB_POOL=15
-    command: bundle exec sidekiq -c 10 -q pull -q scheduler
+    command: bundle exec sidekiq -c 10 -q pull -q scheduler -q fasp,2
     depends_on:
       # - db
       - redis
