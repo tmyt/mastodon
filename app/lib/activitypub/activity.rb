@@ -5,6 +5,7 @@ class ActivityPub::Activity
   include Redisable
   include Lockable
 
+  MAX_JSON_SIZE = 1.megabyte
   SUPPORTED_TYPES = %w(Note Question).freeze
   CONVERTED_TYPES = %w(Image Audio Video Article Page Event).freeze
 
@@ -21,19 +22,18 @@ class ActivityPub::Activity
 
   class << self
     def factory(json, account, **)
-      @json = json
-      klass&.new(json, account, **)
+      klass_for(json)&.new(json, account, **)
     end
 
     private
 
-    def klass
+    def klass_for(json)
       # Support litepub:EmojiReact
-      @json['type'] = 'EmojiReact' if @json['type'].eql?('http://litepub.social/ns#EmojiReact')
+      json['type'] = 'EmojiReact' if json['type'].eql?('http://litepub.social/ns#EmojiReact')
       # Support misskey style emoji react
-      @json['type'] = 'EmojiReact' if @json['type'].eql?('Like') && @json['content'].present?
+      json['type'] = 'EmojiReact' if json['type'].eql?('Like') && json['content'].present?
 
-      case @json['type']
+      case json['type']
       when 'Create'
         ActivityPub::Activity::Create
       when 'Announce'
