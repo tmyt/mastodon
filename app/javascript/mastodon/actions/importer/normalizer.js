@@ -132,7 +132,6 @@ export function normalizeStatus(status, normalOldStatus, { bogusQuotePolicy = fa
   const strippedContent = (domParser.parseFromString(normalStatus.content, 'text/html').documentElement.textContent ?? '').trim();
   const emojiCount = normalStatus.emojis.length;
   const graphemeCount = [...intlSegmenter.segment(strippedContent)].length;
-  console.log(strippedContent);
   normalStatus.hasJumboEmoji = (emojiCount === 1 && strippedContent.match(/^:.*?:$/)) || (graphemeCount === 1 && strippedContent.match(/\p{Emoji}/u));
 
   return normalStatus;
