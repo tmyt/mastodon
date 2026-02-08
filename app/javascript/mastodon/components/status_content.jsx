@@ -192,13 +192,11 @@ class StatusContent extends PureComponent {
     const renderTranslate = this.props.onTranslate && this.props.identity.signedIn && ['public', 'unlisted'].includes(status.get('visibility')) && status.get('search_index').trim().length > 0 && targetLanguages?.includes(contentLocale);
 
     const content = statusContent ?? getStatusContent(status);
-    const hasOneImage = content.match(/(<img[^>]+>)/g)?.length === 1;
-    const noTextContent = hasOneImage && content.replace(/<[^>]+>|\u200b/g, '').trim().length === 0;
     const language = status.getIn(['translation', 'language']) || status.get('language');
     const classNames = classnames('status__content', {
       'status__content--with-action': this.props.onClick && this.props.history,
       'status__content--collapsed': renderReadMore,
-      'status__content--with-jumbo-emoji': noTextContent,
+      'status__content--with-jumbo-emoji': status.get('hasJumboEmoji') ?? false,
     });
 
     const readMoreButton = renderReadMore && (
