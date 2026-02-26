@@ -17,7 +17,7 @@ services:
 
   pgbouncer:
     restart: always
-    image: bitnami/pgbouncer:latest
+    image: edoburu/pgbouncer:latest
     env_file: .env.pgbouncer.production
     networks:
       - external_network
