@@ -15,6 +15,16 @@ services:
   #   environment:
   #     - 'POSTGRES_HOST_AUTH_METHOD=trust'
 
+  pgbouncer:
+    restart: always
+    image: bitnami/pgbouncer:latest
+    env_file: .env.pgbouncer.production
+    networks:
+      - external_network
+      - internal_network
+    ports:
+      - '127.0.0.1:5432:5432'
+
   redis:
     restart: always
     image: redis:7-alpine
@@ -96,6 +106,7 @@ services:
       - '127.0.0.1:3000:3000'
     depends_on:
       # - db
+      - pgbouncer
       - redis
       - es
       # - s3proxy
@@ -126,6 +137,7 @@ services:
       - '127.0.0.1:4000:4000'
     depends_on:
       # - db
+      - pgbouncer
       - redis
     logging:
       driver: json-file
@@ -145,6 +157,7 @@ services:
     command: bundle exec sidekiq -c 10 -q pull -q scheduler -q fasp,2
     depends_on:
       # - db
+      - pgbouncer
       - redis
     networks:
       - external_network
@@ -170,6 +183,7 @@ services:
       - DB_POOL=10
     command: bundle exec sidekiq -c 8 -q default,8 -q push,6 -q mailers,2
     depends_on:
+      - pgbouncer
       - redis
     networks:
       - external_network
@@ -195,6 +209,7 @@ services:
       - DB_POOL=10
     command: bundle exec sidekiq -c 7 -q ingress,4
     depends_on:
+      - pgbouncer
       - redis
     networks:
       - external_network
