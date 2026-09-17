@@ -165,7 +165,7 @@ services:
     volumes:
       - ./public/system:/mastodon/public/system
     healthcheck:
-      test: ['CMD-SHELL', "ps aux | grep '[s]idekiq\ 7' || false"]
+      test: ['CMD-SHELL', "ps aux | grep '[s]idekiq\ 8' || false"]
     mem_limit: 384m
     logging:
       driver: json-file
@@ -191,7 +191,7 @@ services:
     volumes:
       - ./public/system:/mastodon/public/system
     healthcheck:
-      test: ['CMD-SHELL', "ps aux | grep '[s]idekiq\ 7' || false"]
+      test: ['CMD-SHELL', "ps aux | grep '[s]idekiq\ 8' || false"]
     mem_limit: 384m
     logging:
       driver: json-file
@@ -217,7 +217,7 @@ services:
     volumes:
       - ./public/system:/mastodon/public/system
     healthcheck:
-      test: ['CMD-SHELL', "ps aux | grep '[s]idekiq\ 7' || false"]
+      test: ['CMD-SHELL', "ps aux | grep '[s]idekiq\ 8' || false"]
     mem_limit: 384m
     logging:
       driver: json-file

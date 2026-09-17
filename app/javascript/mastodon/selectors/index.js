@@ -16,7 +16,7 @@ const getStatusInputSelectors = [
   (state, { id }) => state.getIn(['statuses', id, 'reactions'])?.flatMap(reaction => reaction.get('users')).map(user => state.getIn(['accounts', user.get('id')])),
   (state, { id }) => state.getIn(['statuses', state.getIn(['statuses', id, 'reblog']), 'reactions'])?.flatMap(reaction => reaction.get('users')).map(user => state.getIn(['accounts', user.get('id')])),
   getFilters,
-  (_, { contextType }) => ['detailed', 'bookmarks', 'favourites'].includes(contextType),
+  (_, { contextType }) => ['detailed', 'bookmarks', 'favourites', 'search'].includes(contextType),
 ];
 
 function getStatusResultFunction(
@@ -98,8 +98,8 @@ function getStatusResultFunction(
     status: statusBase.withMutations(map => {
       map.set('reblog', statusReblog);
       map.set('account', accountBase);
-      map.set('matched_filters', filtered);
-      map.set('matched_media_filters', mediaFiltered);
+      map.set('matched_filters', filtered ? filtered.toJS() : false);
+      map.set('matched_media_filters', mediaFiltered ? mediaFiltered.toJS() : false);
       if (!statusReblog) {
         map.set('reactions', reactions);
       }

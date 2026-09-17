@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { injectIntl } from 'react-intl';
 
 import classNames from 'classnames';
 
@@ -11,20 +10,23 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { useTransition } from '@react-spring/web';
 import Overlay from 'react-overlays/Overlay';
 
+import { injectIntl } from '@/mastodon/components/intl';
 import { AnimatedNumber } from 'mastodon/components/animated_number';
-import { unicodeMapping } from 'mastodon/features/emoji/emoji_unicode_mapping_light';
+import { Emoji } from 'mastodon/components/emoji';
+import { useEmojiAppState } from 'mastodon/features/emoji/mode';
+import { loadEmojiDataToState, stringToEmojiState } from 'mastodon/features/emoji/render';
 import { withIdentity } from 'mastodon/identity_context';
 import { autoPlayGif, reduceMotion } from 'mastodon/initial_state';
-import { assetHost } from 'mastodon/utils/config';
 
 import { Avatar } from './avatar';
 import { DisplayName } from './display_name';
 
-class Emoji extends React.PureComponent {
+// Only custom emoji carry `url`/`static_url`; unicode reactions are rendered by
+// the shared `Emoji` component, which resolves them through the emoji database.
+class ReactionEmoji extends React.PureComponent {
 
   static propTypes = {
     emoji: PropTypes.string.isRequired,
-    emojiMap: ImmutablePropTypes.map.isRequired,
     hovered: PropTypes.bool.isRequired,
     domain: PropTypes.string,
     url: PropTypes.string,
@@ -34,43 +36,28 @@ class Emoji extends React.PureComponent {
   render() {
     const { emoji, hovered, domain, url, static_url } = this.props;
 
-    if (unicodeMapping[emoji]) {
-      const { filename, shortCode } = unicodeMapping[this.props.emoji];
-      const title = shortCode ? `:${shortCode}:` : '';
-
-      return (
-        <img
-          draggable='false'
-          className='emojione'
-          alt={emoji}
-          title={title}
-          src={`${assetHost}/emoji/${filename}.svg`}
-          loading='lazy'
-          decoding='async'
-        />
-      );
-    } else {
-      const filename = (autoPlayGif || hovered) ? url : static_url;
-      const shortCode = `:${emoji}:`;
-      const title = domain ? `:${emoji}@${domain}:` : `:${emoji}:`;
-
-      return (
-        <img
-          draggable='false'
-          className='emojione custom-emoji'
-          alt={shortCode}
-          title={title}
-          src={filename}
-          loading='lazy'
-          decoding='async'
-        />
-      );
+    if (!url) {
+      return <Emoji code={emoji} />;
     }
+
+    const shortCode = `:${emoji}:`;
+
+    return (
+      <img
+        draggable='false'
+        className='emojione custom-emoji'
+        alt={shortCode}
+        title={domain ? `:${emoji}@${domain}:` : shortCode}
+        src={(autoPlayGif || hovered) ? url : static_url}
+        loading='lazy'
+        decoding='async'
+      />
+    );
   }
 
 }
 
-class Reaction extends ImmutablePureComponent {
+class ReactionButton extends ImmutablePureComponent {
 
   static propTypes = {
     status: ImmutablePropTypes.map.isRequired,
@@ -78,7 +65,7 @@ class Reaction extends ImmutablePureComponent {
     reaction: ImmutablePropTypes.map.isRequired,
     addReaction: PropTypes.func.isRequired,
     removeReaction: PropTypes.func.isRequired,
-    emojiMap: ImmutablePropTypes.map.isRequired,
+    shortcode: PropTypes.string,
     style: PropTypes.object,
     disabled: PropTypes.bool,
   };
@@ -118,27 +105,25 @@ class Reaction extends ImmutablePureComponent {
     const { reaction, signedIn } = this.props;
     const { hovered } = this.state;
 
-    let shortCode = reaction.get('name');
+    const name = reaction.get('name');
+    const domain = reaction.get('domain');
     let title;
 
-    const domain = reaction.get('domain');
-
-    if (unicodeMapping[shortCode]) {
-      shortCode = unicodeMapping[shortCode].shortCode;
-      title = `:${shortCode}:`;
+    if (!reaction.get('url')) {
+      // Unicode reaction: the shortcode is resolved asynchronously, so fall
+      // back to the emoji itself until it arrives.
+      title = this.props.shortcode ? `:${this.props.shortcode}:` : name;
+    } else if (!domain || name.endsWith(`@${domain}`)) {
+      title = `:${name}:`;
     } else {
-      if (!domain || shortCode.endsWith(`@${domain}`)) {
-        title = `:${shortCode}:`;
-      } else {
-        title = `${shortCode}@${domain}`;
-      }
+      title = `${name}@${domain}`;
     }
 
     return (
       <>
         <span ref={this.setTargetRef} className='status-reaction-bar__wrapper' onMouseEnter={this.handleMouseEnter} onMouseLeave={this.handleMouseLeave}>
           <button className={classNames('status-reaction-bar__item', { active: reaction.get('me') })} disabled={!signedIn} onClick={this.handleClick} title={title} style={this.props.style}>
-            <span className='status-reaction-bar__item__emoji'><Emoji hovered={hovered} emoji={reaction.get('name')} emojiMap={this.props.emojiMap} domain={reaction.get('domain')} url={reaction.get('url')} static_url={reaction.get('static_url')} signedIn={signedIn} /></span>
+            <span className='status-reaction-bar__item__emoji'><ReactionEmoji hovered={hovered} emoji={reaction.get('name')} domain={reaction.get('domain')} url={reaction.get('url')} static_url={reaction.get('static_url')} /></span>
             <span className='status-reaction-bar__item__count'><AnimatedNumber value={reaction.get('count')} /></span>
           </button>
         </span>
@@ -148,7 +133,7 @@ class Reaction extends ImmutablePureComponent {
               <div className={`dropdown-animation ${placement}`}>
                 <div className='status-reaction-bar__item__users'>
                   <div className='status-reaction-bar__item__users__emoji'>
-                    <span><Emoji hovered={this.state.hovered} emoji={reaction.get('name')} emojiMap={this.props.emojiMap} domain={reaction.get('domain')} url={reaction.get('url')} static_url={reaction.get('static_url')} signedIn={signedIn} /></span>
+                    <span><ReactionEmoji hovered={this.state.hovered} emoji={reaction.get('name')} domain={reaction.get('domain')} url={reaction.get('url')} static_url={reaction.get('static_url')} /></span>
                     <span className='status-reaction-bar__item__users__emoji__code'>{title}</span>
                   </div>
                   <div>
@@ -174,7 +159,52 @@ class Reaction extends ImmutablePureComponent {
   }
 }
 
-const StatusReactionBar = ({identity, status, addReaction, removeReaction, emojiMap, noMargin}) => {
+// Unicode reactions used to get their shortcode from the bundled
+// `unicodeMapping`; 4.6 keeps shortcodes in the async emoji database instead.
+const useReactionShortcode = (reaction) => {
+  const name = reaction.get('name');
+  const isCustom = !!reaction.get('url');
+  const { currentLocale } = useEmojiAppState();
+  const [shortcode, setShortcode] = useState(null);
+
+  useEffect(() => {
+    if (isCustom) {
+      return undefined;
+    }
+
+    const state = stringToEmojiState(name);
+
+    if (!state) {
+      return undefined;
+    }
+
+    let cancelled = false;
+
+    void loadEmojiDataToState(state, currentLocale).then(loaded => {
+      if (!cancelled) {
+        setShortcode(loaded?.data?.shortcodes?.[0] ?? null);
+      }
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [name, isCustom, currentLocale]);
+
+  return shortcode;
+};
+
+const Reaction = (props) => {
+  const shortcode = useReactionShortcode(props.reaction);
+
+  return <ReactionButton {...props} shortcode={shortcode} />;
+};
+
+Reaction.propTypes = {
+  reaction: ImmutablePropTypes.map.isRequired,
+};
+
+const StatusReactionBar = ({identity, status, addReaction, removeReaction, noMargin}) => {
   const { signedIn } = identity || {};
 
   const reactions = status.get('reactions');
@@ -209,7 +239,6 @@ const StatusReactionBar = ({identity, status, addReaction, removeReaction, emoji
           signedIn={signedIn}
           addReaction={addReaction}
           removeReaction={removeReaction}
-          emojiMap={emojiMap}
         />
       ))}
     </div>

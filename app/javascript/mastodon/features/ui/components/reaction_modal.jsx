@@ -1,13 +1,13 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import { injectIntl } from 'react-intl';
 
 import classNames from 'classnames';
 
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 
+import { injectIntl } from '@/mastodon/components/intl';
 import AttachmentList from 'mastodon/components/attachment_list';
 import { VisibilityIcon } from 'mastodon/components/visibility_icon';
 

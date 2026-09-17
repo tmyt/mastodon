@@ -1,17 +1,14 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { defineMessages, FormattedMessage } from 'react-intl';
 
 import classNames from 'classnames';
 
-import ImmutablePropTypes from 'react-immutable-proptypes';
-
 import { supportsPassiveEvents } from 'detect-passive-events';
 
-import { assetHost } from 'mastodon/utils/config';
+import { injectIntl } from '@/mastodon/components/intl';
 
-import { buildCustomEmojis, categoriesFromEmojis } from '../features/emoji/emoji';
 import { EmojiPicker as EmojiPickerAsync } from '../features/ui/util/async-components';
 
 import { CircularProgress } from './circular_progress';
@@ -36,16 +33,11 @@ let EmojiPicker, Emoji; // load asynchronously
 
 const listenerOptions = supportsPassiveEvents ? { passive: true } : false;
 
-const backgroundImageFn = () => `${assetHost}/emoji/sheet_15_1.png`;
-
 const notFoundFn = () => (
   <div className='emoji-mart-no-results'>
     <Emoji
       emoji='sleuth_or_spy'
-      set='twitter'
       size={32}
-      sheetSize={32}
-      backgroundImageFn={backgroundImageFn}
     />
 
     <div className='emoji-mart-no-results-label'>
@@ -103,12 +95,12 @@ class ModifierPickerMenu extends React.PureComponent {
 
     return (
       <div className='emoji-picker-dropdown__modifiers__menu' style={{ display: active ? 'block' : 'none' }} ref={this.setRef}>
-        <button type='button' onClick={this.handleClick} data-index={1}><Emoji emoji='fist' set='twitter' size={22} sheetSize={32} skin={1} backgroundImageFn={backgroundImageFn} /></button>
-        <button type='button' onClick={this.handleClick} data-index={2}><Emoji emoji='fist' set='twitter' size={22} sheetSize={32} skin={2} backgroundImageFn={backgroundImageFn} /></button>
-        <button type='button' onClick={this.handleClick} data-index={3}><Emoji emoji='fist' set='twitter' size={22} sheetSize={32} skin={3} backgroundImageFn={backgroundImageFn} /></button>
-        <button type='button' onClick={this.handleClick} data-index={4}><Emoji emoji='fist' set='twitter' size={22} sheetSize={32} skin={4} backgroundImageFn={backgroundImageFn} /></button>
-        <button type='button' onClick={this.handleClick} data-index={5}><Emoji emoji='fist' set='twitter' size={22} sheetSize={32} skin={5} backgroundImageFn={backgroundImageFn} /></button>
-        <button type='button' onClick={this.handleClick} data-index={6}><Emoji emoji='fist' set='twitter' size={22} sheetSize={32} skin={6} backgroundImageFn={backgroundImageFn} /></button>
+        <button type='button' onClick={this.handleClick} data-index={1}><Emoji emoji='fist' size={22} skin={1} /></button>
+        <button type='button' onClick={this.handleClick} data-index={2}><Emoji emoji='fist' size={22} skin={2} /></button>
+        <button type='button' onClick={this.handleClick} data-index={3}><Emoji emoji='fist' size={22} skin={3} /></button>
+        <button type='button' onClick={this.handleClick} data-index={4}><Emoji emoji='fist' size={22} skin={4} /></button>
+        <button type='button' onClick={this.handleClick} data-index={5}><Emoji emoji='fist' size={22} skin={5} /></button>
+        <button type='button' onClick={this.handleClick} data-index={6}><Emoji emoji='fist' size={22} skin={6} /></button>
       </div>
     );
   }
@@ -143,7 +135,7 @@ class ModifierPicker extends React.PureComponent {
 
     return (
       <div className='emoji-picker-dropdown__modifiers'>
-        <Emoji emoji='fist' set='twitter' size={22} sheetSize={32} skin={modifier} onClick={this.handleClick} backgroundImageFn={backgroundImageFn} />
+        <Emoji emoji='fist' size={22} skin={modifier} onClick={this.handleClick} />
         <ModifierPickerMenu active={active} onSelect={this.handleSelect} onClose={this.props.onClose} />
       </div>
     );
@@ -154,7 +146,6 @@ class ModifierPicker extends React.PureComponent {
 class ReactionPickerMenu extends React.PureComponent {
 
   static propTypes = {
-    custom_emojis: ImmutablePropTypes.list,
     frequentlyUsedEmojis: PropTypes.arrayOf(PropTypes.string),
     onPick: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
@@ -164,7 +155,6 @@ class ReactionPickerMenu extends React.PureComponent {
   };
 
   static defaultProps = {
-    custom_emojis: {},
     frequentlyUsedEmojis: [],
   };
 
@@ -235,7 +225,7 @@ class ReactionPickerMenu extends React.PureComponent {
   }
 
   render () {
-    const { intl, custom_emojis, skinTone, frequentlyUsedEmojis } = this.props;
+    const { intl, skinTone, frequentlyUsedEmojis } = this.props;
     const title = intl.formatMessage(messages.emoji);
     const { loading, modifierOpen } = this.state;
 
@@ -245,40 +235,21 @@ class ReactionPickerMenu extends React.PureComponent {
       );
     }
 
-    const categoriesSort = [
-      'recent',
-      'people',
-      'nature',
-      'foods',
-      'activity',
-      'places',
-      'objects',
-      'symbols',
-      'flags',
-    ];
-
-    categoriesSort.splice(1, 0, ...Array.from(categoriesFromEmojis(custom_emojis)).sort());
-
     return (
       <div className={classNames('reaction-picker__menu', { selecting: modifierOpen })}>
         <EmojiPicker
           perLine={8}
           emojiSize={22}
-          sheetSize={32}
-          custom={buildCustomEmojis(custom_emojis)}
           color=''
           emoji=''
-          set='twitter'
           title={title}
           i18n={this.getI18n()}
           onClick={this.handleClick}
-          include={categoriesSort}
           recent={frequentlyUsedEmojis}
           skin={skinTone}
           showPreview={false}
           showSkinTones={false}
           skinTonePosition={'search'}
-          backgroundImageFn={backgroundImageFn}
           notFound={notFoundFn}
           autoFocus={this.state.readyToFocus}
           emojiTooltip
@@ -301,7 +272,6 @@ class ReactionPickerMenu extends React.PureComponent {
 class ReactionPicker extends React.PureComponent {
 
   static propTypes = {
-    custom_emojis: ImmutablePropTypes.list,
     frequentlyUsedEmojis: PropTypes.arrayOf(PropTypes.string),
     intl: PropTypes.object.isRequired,
     onPickEmoji: PropTypes.func.isRequired,
@@ -317,7 +287,6 @@ class ReactionPicker extends React.PureComponent {
       <div className='reaction-picker'>
         <ReactionPickerMenu
           intl={intl}
-          custom_emojis={this.props.custom_emojis}
           onPick={onPickEmoji}
           onSkinTone={onSkinTone}
           skinTone={skinTone}
