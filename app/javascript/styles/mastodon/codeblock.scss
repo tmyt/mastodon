@@ -1,3 +1,5 @@
+@use 'sass:meta';
+
 code {
   padding: 0.2em 0.4em;
   margin: 0;
@@ -6,4 +8,16 @@ code {
   color: #adbac7;
   background-color: rgba(175, 184, 193, 20%);
   border-radius: 6px;
+}
+
+// The dark highlight.js theme is loaded globally from `application.scss`. The
+// light one used to live in the `mastodon-light` entrypoint, which 4.6 dropped
+// in favour of the `data-color-scheme` token system, so it is scoped here.
+[data-color-scheme='light'] {
+  code {
+    color: #24292f;
+    background-color: rgba(99, 110, 123, 40%);
+  }
+
+  @include meta.load-css('highlight.js/styles/github.css');
 }

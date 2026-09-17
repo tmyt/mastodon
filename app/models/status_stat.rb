@@ -7,6 +7,7 @@
 #  id                         :bigint(8)        not null, primary key
 #  favourites_count           :bigint(8)        default(0), not null
 #  quotes_count               :bigint(8)        default(0), not null
+#  reactions_count            :bigint(8)        default(0), not null
 #  reblogs_count              :bigint(8)        default(0), not null
 #  replies_count              :bigint(8)        default(0), not null
 #  untrusted_favourites_count :bigint(8)
@@ -14,7 +15,6 @@
 #  created_at                 :datetime         not null
 #  updated_at                 :datetime         not null
 #  status_id                  :bigint(8)        not null
-#  reactions_count            :bigint(8)        default(0), not null
 #
 
 class StatusStat < ApplicationRecord

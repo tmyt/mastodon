@@ -2,6 +2,7 @@ import escapeTextContentForBrowser from 'escape-html';
 
 import { expandSpoilers } from '../../initial_state';
 
+import { importCustomEmoji } from './emoji';
 import { highlight } from './highlighter';
 
 const domParser = new DOMParser();
@@ -159,6 +160,10 @@ export function normalizeAnnouncement(announcement) {
   const normalAnnouncement = { ...announcement };
 
   normalAnnouncement.contentHtml = normalAnnouncement.content;
+
+  if (normalAnnouncement.emojis) {
+    importCustomEmoji(normalAnnouncement.emojis);
+  }
 
   return normalAnnouncement;
 }
