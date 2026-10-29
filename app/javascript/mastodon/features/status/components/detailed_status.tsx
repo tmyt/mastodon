@@ -89,7 +89,7 @@ export const DetailedStatus: React.FC<{
   const properStatus = status?.get('reblog') ?? status;
   const [height, setHeight] = useState(0);
   const [showDespiteFilter, setShowDespiteFilter] = useState(false);
-  const nodeRef = useRef<HTMLDivElement>();
+  const nodeRef = useRef<HTMLDivElement>(null);
 
   const { signedIn } = useIdentity();
 
@@ -480,7 +480,7 @@ export const DetailedStatus: React.FC<{
 
         {(!matchedFilters || showDespiteFilter) && (
           <ContentWarning
-            status={status}
+            statusId={status.get('id')}
             expanded={expanded}
             onClick={handleExpandedToggle}
           />

@@ -5,16 +5,13 @@ import classNames from 'classnames';
 
 import ImmutablePropTypes from 'react-immutable-proptypes';
 
-import { supportsPassiveEvents } from 'detect-passive-events';
-import Overlay from 'react-overlays/Overlay';
-
 import { CircularProgress } from 'mastodon/components/circular_progress';
 
 import ReactionPickerContainer from '../containers/reaction_picker_container';
 
 import { IconButton } from './icon_button';
+import { Popover } from './popover';
 
-const listenerOptions = supportsPassiveEvents ? { passive: true } : false;
 let id = 1000;
 
 class ReactionDropdownMenu extends React.PureComponent {
@@ -31,29 +28,12 @@ class ReactionDropdownMenu extends React.PureComponent {
     style: {},
   };
 
-  handleDocumentClick = e => {
-    if (this.node && !this.node.contains(e.target)) {
-      this.props.onClose();
-      e.stopPropagation();
-    }
-  };
-
   componentDidMount () {
-    document.addEventListener('click', this.handleDocumentClick, { capture: true });
-    document.addEventListener('keydown', this.handleKeyDown, { capture: true });
-    document.addEventListener('touchend', this.handleDocumentClick, listenerOptions);
-
     if (this.focusedItem && this.props.openedViaKeyboard) {
       this.focusedItem.focus({ preventScroll: true });
     }
 
     this.setState({ mounted: true });
-  }
-
-  componentWillUnmount () {
-    document.removeEventListener('click', this.handleDocumentClick, { capture: true });
-    document.removeEventListener('keydown', this.handleKeyDown, { capture: true });
-    document.removeEventListener('touchend', this.handleDocumentClick, listenerOptions);
   }
 
   setRef = c => {
@@ -62,14 +42,6 @@ class ReactionDropdownMenu extends React.PureComponent {
 
   setFocusRef = c => {
     this.focusedItem = c;
-  };
-
-  handleKeyDown = e => {
-    switch(e.key) {
-    case 'Escape':
-      this.props.onClose();
-      break;
-    }
   };
 
   render () {
@@ -116,6 +88,7 @@ export default class ReactionDropdown extends React.PureComponent {
 
   state = {
     id: id++,
+    target: null,
   };
 
   handlePickEmoji = (data) => {
@@ -165,11 +138,7 @@ export default class ReactionDropdown extends React.PureComponent {
   };
 
   setTargetRef = c => {
-    this.target = c;
-  };
-
-  findTarget = () => {
-    return this.target;
+    this.setState({ target: c });
   };
 
   componentWillUnmount = () => {
@@ -224,11 +193,10 @@ export default class ReactionDropdown extends React.PureComponent {
         <span ref={this.setTargetRef}>
           {button}
         </span>
-        <Overlay show={open} offset={[5, 5]} placement={'bottom'} flip target={this.findTarget} popperConfig={{ strategy: 'fixed' }}>
-          {({ props, arrowProps, placement }) => (
+        <Popover isOpen={open} offset={{ mainAxis: 5, crossAxis: 5 }} placement='bottom' reference={this.state.target} onClose={this.handleClose}>
+          {({ props, placement }) => (
             <div {...props}>
               <div className={`dropdown-animation ${placement}`}>
-                <div className={`dropdown-menu__arrow ${placement}`} {...arrowProps} />
                 <ReactionDropdownMenu
                   loading={loading}
                   onPickEmoji={this.handlePickEmoji}
@@ -238,7 +206,7 @@ export default class ReactionDropdown extends React.PureComponent {
               </div>
             </div>
           )}
-        </Overlay>
+        </Popover>
       </>
     );
   }

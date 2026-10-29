@@ -8,7 +8,6 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 
 import { useTransition } from '@react-spring/web';
-import Overlay from 'react-overlays/Overlay';
 
 import { injectIntl } from '@/mastodon/components/intl';
 import { AnimatedNumber } from 'mastodon/components/animated_number';
@@ -20,6 +19,7 @@ import { autoPlayGif, reduceMotion } from 'mastodon/initial_state';
 
 import { Avatar } from './avatar';
 import { DisplayName } from './display_name';
+import { Popover } from './popover';
 
 // Only custom emoji carry `url`/`static_url`; unicode reactions are rendered by
 // the shared `Emoji` component, which resolves them through the emoji database.
@@ -72,6 +72,7 @@ class ReactionButton extends ImmutablePureComponent {
 
   state = {
     hovered: false,
+    target: null,
   };
 
   handleClick = () => {
@@ -94,11 +95,7 @@ class ReactionButton extends ImmutablePureComponent {
   handleMouseLeave = () => this.setState({ hovered: false });
 
   setTargetRef = c => {
-    this.target = c;
-  };
-
-  findTarget = () => {
-    return this.target;
+    this.setState({ target: c });
   };
 
   render() {
@@ -127,7 +124,7 @@ class ReactionButton extends ImmutablePureComponent {
             <span className='status-reaction-bar__item__count'><AnimatedNumber value={reaction.get('count')} /></span>
           </button>
         </span>
-        <Overlay show={hovered} offset={[0, 5]} placement={'top'} flip target={this.findTarget} popperConfig={{ strategy: 'fixed' }}>
+        <Popover isOpen={hovered} offset={5} placement='top' reference={this.state.target} onClose={this.handleMouseLeave}>
           {({ props, placement }) => (
             <div {...props} >
               <div className={`dropdown-animation ${placement}`}>
@@ -153,7 +150,7 @@ class ReactionButton extends ImmutablePureComponent {
               </div>
             </div>
           )}
-        </Overlay>
+        </Popover>
       </>
     );
   }
